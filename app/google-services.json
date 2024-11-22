@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1074953426842",
+    "project_id": "cipegasadministracion",
+    "storage_bucket": "cipegasadministracion.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074953426842:android:a9d9fa5662cafad9bdcc23",
+        "android_client_info": {
+          "package_name": "com.cipegas.administracion.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXlByd86NGMtaD4shdZFvnLbxlEGOBQyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
