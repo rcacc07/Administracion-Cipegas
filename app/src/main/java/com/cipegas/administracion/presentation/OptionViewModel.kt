@@ -3,7 +3,7 @@ package com.cipegas.administracion.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cipegas.administracion.data.network.DatabaseRepository
-import com.cipegas.administracion.domain.model.BankItem
+import com.cipegas.administracion.domain.model.OptionItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,28 +11,30 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(val db : DatabaseRepository) : ViewModel() {
 
-    var _uiState : MutableStateFlow<HomeUiState> = MutableStateFlow<HomeUiState>(HomeUiState())
-    val uiState : StateFlow<HomeUiState> = _uiState
+@HiltViewModel
+class OptionViewModel @Inject constructor(val db : DatabaseRepository) : ViewModel(){
+
+    var _uiState : MutableStateFlow<OptionUiState> = MutableStateFlow<OptionUiState>(OptionUiState())
+    val uiState : StateFlow<OptionUiState> = _uiState
 
     init {
         viewModelScope.launch {
-            db.getBanks().collect{ banks ->
+            db.optionCipegas().collect{ options ->
                 _uiState.update {
                     it.copy(
-                        banks = banks,
-                        totalAmount =   banks.sumOf { it.amount }.toString().format("%.2f$")
+                        options = options
                     )
                 }
+
             }
+
         }
     }
+
 }
 
-data class HomeUiState(
-    val isLoading : Boolean = false,
-    val banks : List<BankItem> = emptyList(),
-    val totalAmount : String? = null
+data class OptionUiState(
+    val options :List<OptionItem> = emptyList()
+
 )

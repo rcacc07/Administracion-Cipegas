@@ -4,6 +4,4 @@ data class BankResponse(
     val id: String? = null,
     val name: String? = null,
     val amount : Double? = null,
-
-
 )

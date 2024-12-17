@@ -6,3 +6,8 @@ data class BankItem(
     val amount : Double,
     val date : String
 )
+
+data class BankList(
+    val id: Int,
+    val name : String
+)
