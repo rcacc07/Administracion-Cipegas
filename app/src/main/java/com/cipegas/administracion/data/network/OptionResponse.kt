@@ -1,6 +1,6 @@
 package com.cipegas.administracion.data.network
 
 data class OptionResponse (
-    val id : String? = null,
+    val id : Int? = null,
     val opcion :String? = null
 )

@@ -14,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.cipegas.administracion.navigation.NavManager
 import com.cipegas.administracion.presentation.HomeScreen
 import com.cipegas.administracion.presentation.HomeViewModel
 import com.cipegas.administracion.presentation.OptionScreen
@@ -25,6 +27,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val optionVM : OptionViewModel by viewModels()
+        val banksVM : HomeViewModel by viewModels()
+
         setContent {
             AdministracionTheme {
                 Surface(
@@ -33,8 +39,10 @@ class MainActivity : ComponentActivity() {
                 ) {
 //                    val homeViewModel : HomeViewModel by viewModels<HomeViewModel>()
 //                    HomeScreen(homeViewModel)
-                    val optionsViewModel : OptionViewModel by viewModels<OptionViewModel>()
-                    OptionScreen(optionsViewModel)
+                    //val optionsViewModel : OptionViewModel by viewModels<OptionViewModel>()
+                    //OptionScreen(optionsViewModel)
+                    NavManager(optionVM, banksVM)
+
                 }
             }
         }

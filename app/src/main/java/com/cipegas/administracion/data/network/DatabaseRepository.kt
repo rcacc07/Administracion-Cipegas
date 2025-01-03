@@ -56,8 +56,8 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return bm
     }
 
-    fun optionDomain(op : OptionResponse) : OptionItem?{
-        val op = OptionItem(id = op.id.toString(),
+    fun optionDomain(op : OptionResponse) : OptionItem {
+        val op = OptionItem(id = op.id ?: 0,
             name = op.opcion.toString())
         return op
     }

@@ -28,9 +28,9 @@ import com.cipegas.administracion.domain.model.BankItem
 
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel , navController: NavController) {
+fun CobranzasScreen(cobranzasVM: CobranzaViewModel , navController: NavController) {
 
-    val uiState : HomeUiState by homeViewModel.uiState.collectAsState()
+    val uiState : CobranzasUiState by cobranzasVM.uiState.collectAsState()
     Scaffold (
         topBar = {
             MainTopBar(title = "BANCOS" , onClickBackButton = {}) {
@@ -38,21 +38,21 @@ fun HomeScreen(homeViewModel: HomeViewModel , navController: NavController) {
             }
         }
     ){
-        Banks(uiState.banks,it)
+        Cobranzas(uiState.banks,it)
     }
 }
 
 
 
 @Composable
-fun Banks(banks : List<BankItem> , paddingValues: PaddingValues) {
+fun Cobranzas(banks : List<BankItem>, paddingValues: PaddingValues) {
 
     LazyColumn (
         modifier = Modifier
             .padding(paddingValues)
     ) {
         items(banks){ bank ->
-            CardBankItem(bank)
+            CardCobranzasItem(bank)
         }
     }
 
@@ -60,7 +60,7 @@ fun Banks(banks : List<BankItem> , paddingValues: PaddingValues) {
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardBankItem(bank: BankItem) {
+fun CardCobranzasItem(bank: BankItem) {
 
     Row(
         modifier = Modifier
