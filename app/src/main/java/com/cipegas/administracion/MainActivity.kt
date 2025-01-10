@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cipegas.administracion.navigation.NavManager
 import com.cipegas.administracion.presentation.HomeScreen
 import com.cipegas.administracion.presentation.HomeViewModel
+import com.cipegas.administracion.presentation.LoanViewModel
 import com.cipegas.administracion.presentation.OptionScreen
 import com.cipegas.administracion.presentation.OptionViewModel
 import com.cipegas.administracion.ui.theme.AdministracionTheme
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
 
         val optionVM : OptionViewModel by viewModels()
         val banksVM : HomeViewModel by viewModels()
+        val loansVM : LoanViewModel by viewModels()
 
         setContent {
             AdministracionTheme {
@@ -41,7 +43,7 @@ class MainActivity : ComponentActivity() {
 //                    HomeScreen(homeViewModel)
                     //val optionsViewModel : OptionViewModel by viewModels<OptionViewModel>()
                     //OptionScreen(optionsViewModel)
-                    NavManager(optionVM, banksVM)
+                    NavManager(optionVM, banksVM , loansVM)
 
                 }
             }

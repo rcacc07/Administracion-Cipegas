@@ -78,15 +78,15 @@ fun OptionsList(optiones : List<OptionItem>, paddingValues: PaddingValues ,navCo
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(4.dp),
-        modifier = Modifier.padding(paddingValues)) {
+        modifier = Modifier.padding(paddingValues)
+    ) {
         items(optiones) { item ->
             OptionsGridItem(item.name){
                 val result = when(item.id){
                     1 -> "Cobranzas"
                     2 -> "Banks"
                     3 -> "Pagos"
-                    else -> "Prestamos"
+                    else -> "Loans"
                 }
                 navController.navigate(result)
             }

@@ -48,8 +48,7 @@ fun HomeScreen(homeViewModel: HomeViewModel , navController: NavController) {
 fun Banks(banks : List<BankItem> , paddingValues: PaddingValues) {
 
     LazyColumn (
-        modifier = Modifier
-            .padding(paddingValues)
+        modifier = Modifier.padding(paddingValues)
     ) {
         items(banks){ bank ->
             CardBankItem(bank)
