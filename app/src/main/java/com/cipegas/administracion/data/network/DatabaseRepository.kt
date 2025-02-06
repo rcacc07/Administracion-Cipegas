@@ -2,6 +2,7 @@ package com.cipegas.administracion.data.network
 
 import android.util.Log
 import com.cipegas.administracion.domain.model.BankItem
+import com.cipegas.administracion.domain.model.ChargeItem
 import com.cipegas.administracion.domain.model.LoanItem
 import com.cipegas.administracion.domain.model.OptionItem
 import com.cipegas.administracion.domain.model.QuotaItem
@@ -18,10 +19,19 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
     companion object{
         const val USER_COLLECTION = "bancos"
         const val LOANS_COLLECTION = "prestamos"
-        const val FIELD_DATE = "date"
-
         const val OPTION_COLLECTION = "opciones"
+        const val CHARGE_COLLECTION = "cobranzas"
 
+    }
+
+    suspend fun getCharge() : List<ChargeItem>{
+
+        val chargeResponse : MutableList<ChargueResponse> = arrayListOf()
+        db.collection(CHARGE_COLLECTION)
+            .get()
+            .addOnSuccessListener {
+
+            }
     }
 
     suspend fun getLoans() : List<LoanItem> {
