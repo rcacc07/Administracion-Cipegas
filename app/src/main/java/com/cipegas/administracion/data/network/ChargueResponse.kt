@@ -1,6 +1,8 @@
 package com.cipegas.administracion.data.network
 
 data class ChargueResponse(
-    val title : String? = null,
-    val amount: Double? = null,
+
+    val clients : List<ClientResponse> ?= null,
+    val title : String ?= null,
+    val fecDesem : String ?= null,
 )

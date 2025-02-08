@@ -14,8 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cipegas.administracion.navigation.NavManager
+import com.cipegas.administracion.presentation.CobranzaViewModel
 import com.cipegas.administracion.presentation.HomeScreen
 import com.cipegas.administracion.presentation.HomeViewModel
 import com.cipegas.administracion.presentation.LoanViewModel
@@ -32,6 +34,7 @@ class MainActivity : ComponentActivity() {
         val optionVM : OptionViewModel by viewModels()
         val banksVM : HomeViewModel by viewModels()
         val loansVM : LoanViewModel by viewModels()
+        val chargeVM : CobranzaViewModel by viewModels()
 
         setContent {
             AdministracionTheme {
@@ -43,7 +46,7 @@ class MainActivity : ComponentActivity() {
 //                    HomeScreen(homeViewModel)
                     //val optionsViewModel : OptionViewModel by viewModels<OptionViewModel>()
                     //OptionScreen(optionsViewModel)
-                    NavManager(optionVM, banksVM , loansVM)
+                    NavManager(optionVM, banksVM , loansVM , chargeVM)
 
                 }
             }

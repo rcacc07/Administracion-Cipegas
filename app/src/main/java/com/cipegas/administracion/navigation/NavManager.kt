@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.cipegas.administracion.presentation.CobranzaViewModel
+import com.cipegas.administracion.presentation.CobranzasScreen
 import com.cipegas.administracion.presentation.HomeScreen
 import com.cipegas.administracion.presentation.HomeViewModel
 import com.cipegas.administracion.presentation.LoanViewModel
@@ -14,7 +16,8 @@ import com.cipegas.administracion.presentation.PrestamosScreen
 @Composable
 fun NavManager(optionVM : OptionViewModel,
                banksVM: HomeViewModel,
-               loansVM : LoanViewModel){
+               loansVM : LoanViewModel,
+               chargeVM : CobranzaViewModel){
 
     val navController = rememberNavController()
     NavHost(navController = navController , startDestination = "Options") {
@@ -26,6 +29,9 @@ fun NavManager(optionVM : OptionViewModel,
         }
         composable("Loans"){
             PrestamosScreen(loansVM,navController)
+        }
+        composable("Cobranza"){
+            CobranzasScreen(chargeVM,navController)
         }
     }
 }

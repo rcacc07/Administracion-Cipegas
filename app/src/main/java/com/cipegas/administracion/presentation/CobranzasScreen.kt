@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.cipegas.administracion.components.MainTopBar
-import com.cipegas.administracion.domain.model.BankItem
+import com.cipegas.administracion.domain.model.ClientItem
 
 
 @Composable
@@ -33,26 +33,26 @@ fun CobranzasScreen(cobranzasVM: CobranzaViewModel , navController: NavControlle
     val uiState : CobranzasUiState by cobranzasVM.uiState.collectAsState()
     Scaffold (
         topBar = {
-            MainTopBar(title = "BANCOS" , onClickBackButton = {}) {
+            MainTopBar(title = "COBRANZAS" , onClickBackButton = {}) {
                 //
             }
         }
     ){
-        Cobranzas(uiState.banks,it)
+        uiState.charges?.let { it1 -> Cobranzas(it1.clients,it) }
     }
 }
 
 
 
 @Composable
-fun Cobranzas(banks : List<BankItem>, paddingValues: PaddingValues) {
+fun Cobranzas(charges: List<ClientItem>, paddingValues: PaddingValues) {
 
     LazyColumn (
         modifier = Modifier
             .padding(paddingValues)
     ) {
-        items(banks){ bank ->
-            CardCobranzasItem(bank)
+        items(charges){ charge ->
+            CardCobranzasItem(charge)
         }
     }
 
@@ -60,7 +60,7 @@ fun Cobranzas(banks : List<BankItem>, paddingValues: PaddingValues) {
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardCobranzasItem(bank: BankItem) {
+fun CardCobranzasItem(client: ClientItem) {
 
     Row(
         modifier = Modifier
@@ -70,12 +70,12 @@ fun CardCobranzasItem(bank: BankItem) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text(text = bank.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            client.name?.let { Text(text = it, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
             Spacer(modifier = Modifier.height(6.dp))
             ///Text(text = bank.date, fontSize = 14.sp)
         }
         Spacer(modifier = Modifier.weight(1f))
-        val amount = String.format("%-,10.2f", bank.amount)
+        val amount = String.format("%-,10.2f", client.amount)
 
         Text(
             text = "S/. $amount",
