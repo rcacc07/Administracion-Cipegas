@@ -116,9 +116,6 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
 
     fun chargeToDomain(chargesResp : List<ChargueResponse>) : ChargeItem? {
 
-        //val chargesDomain : MutableList<ChargeItem> = arrayListOf()
-        //val ci = ChargeItem()
-
         val clients : MutableList<ClientItem> = arrayListOf()
         var ci :ChargeItem? = null
         chargesResp.forEach { cl ->
@@ -128,7 +125,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
                 clients.add(cl)
             }
 
-            ci = ChargeItem(clients,cl.title.toString(),cl.fecDesem.toString())
+            ci = ChargeItem(clients,cl.date.toString())
 
         }
 

@@ -63,13 +63,13 @@ fun CardBankItem(bank: BankItem) {
 
     Row(
         modifier = Modifier
-            .padding(24.dp)
+            .padding(12.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text(text = bank.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = bank.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(6.dp))
             ///Text(text = bank.date, fontSize = 14.sp)
         }
@@ -80,6 +80,6 @@ fun CardBankItem(bank: BankItem) {
             text = "S/. $amount",
             color = Color.Red,
             fontWeight = FontWeight.Bold,
-            fontSize = 18.sp)
+            fontSize = 12.sp)
     }
 }

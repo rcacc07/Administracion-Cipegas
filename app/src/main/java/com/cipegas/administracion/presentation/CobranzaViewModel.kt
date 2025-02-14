@@ -14,10 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CobranzaViewModel @Inject constructor(val db : DatabaseRepository) : ViewModel() {
 
-    var _uiState : MutableStateFlow<CobranzasUiState> = MutableStateFlow<CobranzasUiState>(CobranzasUiState(
-        isLoading = TODO(),
-        charges = TODO()
-    ))
+    var _uiState : MutableStateFlow<CobranzasUiState> = MutableStateFlow(CobranzasUiState())
     val uiState : StateFlow<CobranzasUiState> = _uiState
 
     init {
@@ -34,5 +31,5 @@ class CobranzaViewModel @Inject constructor(val db : DatabaseRepository) : ViewM
 
 data class CobranzasUiState(
     val isLoading: Boolean = false,
-    val charges: ChargeItem?,
+    val charges: ChargeItem? = null,
 )

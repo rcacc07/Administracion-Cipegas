@@ -1,10 +1,14 @@
 package com.cipegas.administracion.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -38,21 +43,56 @@ fun CobranzasScreen(cobranzasVM: CobranzaViewModel , navController: NavControlle
             }
         }
     ){
-        uiState.charges?.let { it1 -> Cobranzas(it1.clients,it) }
+        //uiState.charges?.let { it1 -> Cobranzas(it1.clients,it) }
+
+        Cobranzas(uiState.charges!!.clients,it)
     }
 }
 
 
 
 @Composable
-fun Cobranzas(charges: List<ClientItem>, paddingValues: PaddingValues) {
+fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
+
+    var suma = 0.0
 
     LazyColumn (
         modifier = Modifier
             .padding(paddingValues)
     ) {
-        items(charges){ charge ->
-            CardCobranzasItem(charge)
+        items(client){ client ->
+            suma += client.amount
+            CardCobranzasItem(client)
+        }
+
+
+        item {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .wrapContentHeight(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+
+            ){
+                Text(
+                    text = "Total",
+                    modifier = Modifier.weight(1f),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp)
+
+
+                Text(
+                    text = "S/." + suma.toBigDecimal().toPlainString(),
+                    modifier = Modifier.weight(1f),
+                    color = Color.Black,
+                    textAlign = TextAlign.Left,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp)
+
+
+            }
         }
     }
 
@@ -64,23 +104,27 @@ fun CardCobranzasItem(client: ClientItem) {
 
     Row(
         modifier = Modifier
-            .padding(24.dp)
             .fillMaxWidth()
+            .padding(8.dp)
             .wrapContentHeight(),
-        verticalAlignment = Alignment.CenterVertically
+       horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
-            client.name?.let { Text(text = it, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
-            Spacer(modifier = Modifier.height(6.dp))
-            ///Text(text = bank.date, fontSize = 14.sp)
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        val amount = String.format("%-,10.2f", client.amount)
+        Text(
+            text = client.name.toString(),
+            modifier = Modifier.weight(1.5f),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp)
+
+        val amount = String.format("%-,20.2f", client.amount)
 
         Text(
-            text = "S/. $amount",
+            text = "S/."+ amount,
+            modifier = Modifier.weight(1f).
+            background(Color.Blue),
             color = Color.Red,
+            textAlign = TextAlign.Left,
             fontWeight = FontWeight.Bold,
-            fontSize = 18.sp)
+            fontSize = 12.sp)
     }
 }

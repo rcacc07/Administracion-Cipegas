@@ -1,7 +1,7 @@
 package com.cipegas.administracion.domain.model
 
 data class ChargeItem(
-    val clients : List<ClientItem>,
-    val title : String ? = null,
-    val amount: String ? = null,
+    var clients : List<ClientItem> = emptyList() ,
+    var date : String  = "",
+
 )

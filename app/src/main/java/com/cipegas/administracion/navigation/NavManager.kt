@@ -30,7 +30,7 @@ fun NavManager(optionVM : OptionViewModel,
         composable("Loans"){
             PrestamosScreen(loansVM,navController)
         }
-        composable("Cobranza"){
+        composable("Cobranzas"){
             CobranzasScreen(chargeVM,navController)
         }
     }

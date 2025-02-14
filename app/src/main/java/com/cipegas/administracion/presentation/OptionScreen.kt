@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -48,28 +49,23 @@ fun OptionScreen(optionViewModel: OptionViewModel , navController: NavController
 @Composable
 fun OptionsGridItem(title : String , onClick: () -> Unit){
 
-    Row (
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Card(
-            modifier = Modifier
-                .width(150.dp)
-                .height(100.dp)
-                .padding(10.dp)
-                .clickable {
-                    onClick()
-                },
-            shape = RoundedCornerShape(5.dp),
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onClick() },
+
+        shape = RoundedCornerShape(5.dp),
+
         ) {
-            Text(
-                text = title,
-                textAlign = TextAlign.Center,
-                color = Color.Red
-            )
-        }
+        Text(
+            modifier = Modifier.padding(8.dp)
+                .align(alignment = Alignment.CenterHorizontally),
+            text = title,
+            color = Color.Red
+
+        )
     }
+
 }
 
 
