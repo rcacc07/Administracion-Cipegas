@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -77,14 +78,14 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
             ){
                 Text(
                     text = "Total",
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1.5f),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp)
 
-
+                val amountTotal = String.format("%-,20.2FM", suma.toBigDecimal())
                 Text(
-                    text = "S/." + suma.toBigDecimal().toPlainString(),
+                    text = "S/." + amountTotal,
                     modifier = Modifier.weight(1f),
                     color = Color.Black,
                     textAlign = TextAlign.Left,
@@ -116,14 +117,15 @@ fun CardCobranzasItem(client: ClientItem) {
             fontWeight = FontWeight.Bold,
             fontSize = 12.sp)
 
-        val amount = String.format("%-,20.2f", client.amount)
+        val amount = String.format("%-,20.2fL", client.amount)
 
         Text(
             text = "S/."+ amount,
             modifier = Modifier.weight(1f).
-            background(Color.Blue),
+            background(Color.Blue)
+                .fillMaxWidth(),
             color = Color.Red,
-            textAlign = TextAlign.Left,
+            style = TextStyle(textAlign = TextAlign.Left),
             fontWeight = FontWeight.Bold,
             fontSize = 12.sp)
     }
