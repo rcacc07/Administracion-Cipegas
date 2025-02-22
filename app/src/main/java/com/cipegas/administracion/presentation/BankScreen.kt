@@ -22,13 +22,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.BankItem
 
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel , navController: NavController) {
+fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
 
     val uiState : HomeUiState by homeViewModel.uiState.collectAsState()
     Scaffold (

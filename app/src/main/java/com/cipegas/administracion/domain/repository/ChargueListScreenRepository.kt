@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChargueListScreenRepository {
 
-    suspend fun loadChargueList() : Flow<Response<ChargeItem>>
+     fun loadChargueList() : Flow<Response<ChargeItem>>
 }

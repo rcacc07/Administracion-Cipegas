@@ -18,6 +18,7 @@ class OptionViewModel @Inject constructor(val db : DatabaseRepository) : ViewMod
     var _uiState : MutableStateFlow<OptionUiState> = MutableStateFlow<OptionUiState>(OptionUiState())
     val uiState : StateFlow<OptionUiState> = _uiState
 
+
     init {
         viewModelScope.launch {
             db.optionCipegas().collect{ options ->

@@ -28,13 +28,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.ClientItem
 
 
 @Composable
-fun CobranzasScreen(cobranzasVM: CobranzaViewModel , navController: NavController) {
+fun CobranzasScreen(cobranzasVM: CobranzaViewModel = hiltViewModel()) {
 
     val uiState : CobranzasUiState by cobranzasVM.uiState.collectAsState()
     Scaffold (

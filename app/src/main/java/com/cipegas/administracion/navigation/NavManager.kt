@@ -1,6 +1,7 @@
 package com.cipegas.administracion.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,24 +15,36 @@ import com.cipegas.administracion.presentation.OptionViewModel
 import com.cipegas.administracion.presentation.PrestamosScreen
 
 @Composable
-fun NavManager(optionVM : OptionViewModel,
-               banksVM: HomeViewModel,
-               loansVM : LoanViewModel,
-               chargeVM : CobranzaViewModel){
+fun NavManager(navigationController : NavHostController){
+    NavHost(
+        navController = navigationController ,
+        startDestination = "Home"
+    ) {
 
-    val navController = rememberNavController()
-    NavHost(navController = navController , startDestination = "Options") {
-        composable("Options"){
-            OptionScreen(optionVM,navController)
+        composable("Home"){
+            OptionScreen(navigateTo  = {optionId ->
+                navigationController.navigate(Routes.Option.createOption(optionId))
+            } )
         }
         composable("Banks"){
-            HomeScreen(banksVM,navController)
+            HomeScreen()
         }
         composable("Loans"){
-            PrestamosScreen(loansVM,navController)
+            PrestamosScreen()
         }
-        composable("Cobranzas"){
-            CobranzasScreen(chargeVM,navController)
+        composable("Chargue"){
+            CobranzasScreen()
         }
+    }
+}
+
+sealed class Routes(val route : String){
+    object Home : Routes("Banks")
+    object Option : Routes("option/{optionId}"){
+
+        fun createOption(optionId : String) : String{
+            return optionId
+        }
+
     }
 }

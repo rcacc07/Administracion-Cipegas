@@ -25,13 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.OptionItem
 
 @Composable
-fun OptionScreen(optionViewModel: OptionViewModel , navController: NavController){
-
+fun OptionScreen(
+    optionViewModel: OptionViewModel = hiltViewModel(),
+    navigateTo : (String) -> Unit
+){
     val uiState : OptionUiState by optionViewModel.uiState.collectAsState()
 
     Scaffold (
@@ -41,9 +43,9 @@ fun OptionScreen(optionViewModel: OptionViewModel , navController: NavController
             }
         }
     ){
-        OptionsList(uiState.options,it,navController)
+        OptionsList(uiState.options,it ,
+            onSelectedOption = { id -> navigateTo(id) })
     }
-
 }
 
 @Composable
@@ -53,7 +55,6 @@ fun OptionsGridItem(title : String , onClick: () -> Unit){
         modifier = Modifier
             .padding(8.dp)
             .clickable { onClick() },
-
         shape = RoundedCornerShape(5.dp),
 
         ) {
@@ -65,27 +66,30 @@ fun OptionsGridItem(title : String , onClick: () -> Unit){
 
         )
     }
-
 }
 
 
 @Composable
-fun OptionsList(optiones : List<OptionItem>, paddingValues: PaddingValues ,navController: NavController){
+fun OptionsList(optiones : List<OptionItem>, paddingValues: PaddingValues ,
+                onSelectedOption: (String) -> Unit ){
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.padding(paddingValues)
     ) {
         items(optiones) { item ->
-            OptionsGridItem(item.name){
+            OptionsGridItem(item.name , onClick = {
+
                 val result = when(item.id){
                     1 -> "Cobranzas"
                     2 -> "Banks"
                     3 -> "Pagos"
                     else -> "Loans"
                 }
-                navController.navigate(result)
-            }
+
+                onSelectedOption(result)
+
+            })
         }
     }
 

@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.cipegas.administracion.navigation.NavManager
 import com.cipegas.administracion.presentation.CobranzaViewModel
 import com.cipegas.administracion.presentation.HomeScreen
@@ -28,25 +30,19 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private lateinit var navigationController : NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val optionVM : OptionViewModel by viewModels()
-        val banksVM : HomeViewModel by viewModels()
-        val loansVM : LoanViewModel by viewModels()
-        val chargeVM : CobranzaViewModel by viewModels()
-
         setContent {
             AdministracionTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    val homeViewModel : HomeViewModel by viewModels<HomeViewModel>()
-//                    HomeScreen(homeViewModel)
-                    //val optionsViewModel : OptionViewModel by viewModels<OptionViewModel>()
-                    //OptionScreen(optionsViewModel)
-                    NavManager(optionVM, banksVM , loansVM , chargeVM)
+                    navigationController = rememberNavController()
+                    NavManager(navigationController)
 
                 }
             }

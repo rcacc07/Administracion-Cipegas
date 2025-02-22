@@ -28,13 +28,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.LoanItem
 import java.text.DecimalFormat
 
 @Composable
-fun PrestamosScreen(loanViewModel: LoanViewModel , navController: NavController) {
+fun PrestamosScreen(loanViewModel: LoanViewModel  = hiltViewModel()) {
 
     val uiState : LoanUiState by loanViewModel.uiState.collectAsState()
 

@@ -14,7 +14,8 @@ import javax.inject.Inject
 class ChargueListScreenRepositoryImpl @Inject constructor(
     private val db : FirebaseFirestore
 ) : ChargueListScreenRepository {
-    override suspend fun loadChargueList(): Flow<Response<ChargeItem>> = callbackFlow {
+
+    override fun loadChargueList(): Flow<Response<ChargeItem>> = callbackFlow {
 
         val chargesResponse : MutableList<ChargueResponse> = arrayListOf()
 
