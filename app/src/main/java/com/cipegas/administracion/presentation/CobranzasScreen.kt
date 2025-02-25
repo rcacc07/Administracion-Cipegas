@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.ClientItem
 
@@ -47,7 +45,7 @@ fun CobranzasScreen(cobranzasVM: CobranzaViewModel = hiltViewModel()) {
     ){
         //uiState.charges?.let { it1 -> Cobranzas(it1.clients,it) }
 
-        Cobranzas(uiState.charges!!.clients,it)
+        Cobranzas(uiState.charge.get(0).clients,it)
     }
 }
 

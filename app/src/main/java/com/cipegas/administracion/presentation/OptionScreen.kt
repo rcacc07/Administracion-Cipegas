@@ -81,7 +81,7 @@ fun OptionsList(optiones : List<OptionItem>, paddingValues: PaddingValues ,
             OptionsGridItem(item.name , onClick = {
 
                 val result = when(item.id){
-                    1 -> "Cobranzas"
+                    1 -> "Chargue"
                     2 -> "Banks"
                     3 -> "Pagos"
                     else -> "Loans"

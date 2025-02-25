@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoanViewModel @Inject constructor(val db : DatabaseRepository) : ViewModel() {
 
-    var _uiState : MutableStateFlow<LoanUiState> = MutableStateFlow<LoanUiState>(LoanUiState())
+    var _uiState : MutableStateFlow<LoanUiState> = MutableStateFlow(LoanUiState())
     val uiState : StateFlow<LoanUiState> = _uiState
 
     init {

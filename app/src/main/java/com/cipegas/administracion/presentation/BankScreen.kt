@@ -28,7 +28,7 @@ import com.cipegas.administracion.domain.model.BankItem
 
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun BankScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
 
     val uiState : HomeUiState by homeViewModel.uiState.collectAsState()
     Scaffold (

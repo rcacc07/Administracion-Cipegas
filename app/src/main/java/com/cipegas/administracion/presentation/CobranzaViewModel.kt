@@ -21,7 +21,7 @@ class CobranzaViewModel @Inject constructor(val db : DatabaseRepository) : ViewM
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
-                    charges = db.getCharge()
+                    charge = db.getCharge()
                 )
             }
         }
@@ -31,5 +31,5 @@ class CobranzaViewModel @Inject constructor(val db : DatabaseRepository) : ViewM
 
 data class CobranzasUiState(
     val isLoading: Boolean = false,
-    val charges: ChargeItem? = null,
+    val charge: List<ChargeItem> = emptyList(),
 )

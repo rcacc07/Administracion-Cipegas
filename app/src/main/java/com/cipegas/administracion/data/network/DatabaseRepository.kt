@@ -25,23 +25,33 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
 
     }
 
-    suspend fun getCharge() : ChargeItem? {
+    suspend fun getCharge() : List<ChargeItem> {
 
         val chargesResponse : MutableList<ChargueResponse> = arrayListOf()
         db.collection(CHARGE_COLLECTION)
             .get()
             .addOnSuccessListener { snapshot ->
+
+                Log.d("CIPEGAS CARO CHARGUE", snapshot.toString())
                 for (doc in snapshot){
                     val chargeResponse = doc.toObject<ChargueResponse>()
                     chargesResponse.add(chargeResponse)
                 }
             }
             .addOnFailureListener { exception ->
-
+                Log.d("CIPEGAS CARO CHARGUE", "get failed with", exception)
             }
             .await()
 
         return chargeToDomain(chargesResponse)
+    }
+
+    fun optionCipegas() : Flow<List<OptionItem>>{
+        return db.collection(OPTION_COLLECTION)
+            .snapshots()
+            .map { qs -> qs.toObjects(OptionResponse::class.java).mapNotNull {
+                    optionResponse -> optionDomain(optionResponse)
+            } }
     }
 
     suspend fun getLoans() : List<LoanItem> {
@@ -62,19 +72,6 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             .await()
 
         return loansToDomain(loansResponse)
-
-//            db.collection(LOANS_COLLECTION).document(loan.idFirebase.toString()).collection("cuotas").get()
-//                .addOnSuccessListener { result ->
-//                    for (doc in result){
-//                        Log.d("CIPEGAS", doc.id + " = " + doc.data)
-//                    }
-//                }
-
-        /* return db.collection(LOANS_COLLECTION)
-            .snapshots()
-            .map { qs -> qs.toObjects(LoanResponse::class.java).mapNotNull { LoanResponse ->
-                loanToDomain(LoanResponse) }
-            }  */
     }
 
     fun getBanks() : Flow<List<BankItem>>{
@@ -85,13 +82,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             }
     }
 
-    fun optionCipegas() : Flow<List<OptionItem>>{
-        return db.collection(OPTION_COLLECTION)
-            .snapshots()
-            .map { qs -> qs.toObjects(OptionResponse::class.java).mapNotNull {
-                optionResponse -> optionDomain(optionResponse)
-            } }
-    }
+
 
     fun loansToDomain(loansResp: List<LoanResponse>) : List<LoanItem>{
 
@@ -114,10 +105,11 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return loansDomain
     }
 
-    fun chargeToDomain(chargesResp : List<ChargueResponse>) : ChargeItem? {
+    fun chargeToDomain(chargesResp : List<ChargueResponse>) : List<ChargeItem> {
 
         val clients : MutableList<ClientItem> = arrayListOf()
-        var ci :ChargeItem? = null
+        val chargues : MutableList<ChargeItem> = arrayListOf()
+        var ci :ChargeItem?
         chargesResp.forEach { cl ->
 
             cl.clients?.forEach{ c ->
@@ -126,10 +118,11 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             }
 
             ci = ChargeItem(clients,cl.date.toString())
+            chargues.add(ci!!)
 
         }
 
-        return ci
+        return chargues
     }
 
     fun bankToDomain(br: BankResponse) : BankItem?{
