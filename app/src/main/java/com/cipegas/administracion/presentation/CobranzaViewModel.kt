@@ -19,10 +19,13 @@ class CobranzaViewModel @Inject constructor(val db : DatabaseRepository) : ViewM
 
     init {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    charge = db.getCharge()
-                )
+            db.getCharge().collect{ cg ->
+                _uiState.update {
+                    it.copy(
+                        charge = cg,
+                    )
+                }
+
             }
         }
 

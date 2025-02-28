@@ -1,16 +1,10 @@
 package com.cipegas.administracion.presentation
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.ClientItem
+import java.text.DecimalFormat
 
 
 @Composable
@@ -43,13 +38,11 @@ fun CobranzasScreen(cobranzasVM: CobranzaViewModel = hiltViewModel()) {
             }
         }
     ){
-        //uiState.charges?.let { it1 -> Cobranzas(it1.clients,it) }
-
-        Cobranzas(uiState.charge.get(0).clients,it)
+        if(uiState.charge.isNotEmpty()){
+            Cobranzas(uiState.charge.get(0).clients,it)
+        }
     }
 }
-
-
 
 @Composable
 fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
@@ -65,7 +58,6 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
             CardCobranzasItem(client)
         }
 
-
         item {
             Row (
                 modifier = Modifier
@@ -76,20 +68,22 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
 
             ){
                 Text(
-                    text = "Total",
-                    modifier = Modifier.weight(1.5f),
+                    text = "TOTAL =",
+                    modifier = Modifier.weight(2f),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
+                    style = TextStyle(textAlign = TextAlign.Center),
                     fontSize = 16.sp)
 
-                val amountTotal = String.format("%-,20.2FM", suma.toBigDecimal())
+                val formatter = DecimalFormat("#,###,##0.00")
+                val amountTotal = formatter.format(suma)
                 Text(
-                    text = "S/." + amountTotal,
+                    text = "S/.".plus(amountTotal),
                     modifier = Modifier.weight(1f),
                     color = Color.Black,
-                    textAlign = TextAlign.Left,
+                    style = TextStyle(textAlign = TextAlign.Left),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp)
+                    fontSize = 14.sp)
 
 
             }
@@ -111,17 +105,15 @@ fun CardCobranzasItem(client: ClientItem) {
     ) {
         Text(
             text = client.name.toString(),
-            modifier = Modifier.weight(1.5f),
+            modifier = Modifier.weight(2f),
             color = Color.Black,
             fontWeight = FontWeight.Bold,
+            style = TextStyle(textAlign = TextAlign.Left),
             fontSize = 12.sp)
 
-        val amount = String.format("%-,20.2fL", client.amount)
-
         Text(
-            text = "S/."+ amount,
-            modifier = Modifier.weight(1f).
-            background(Color.Blue)
+            text = "S/.".plus(String.format("%-,20.2f", client.amount)).trim(),
+            modifier = Modifier.weight(1f)
                 .fillMaxWidth(),
             color = Color.Red,
             style = TextStyle(textAlign = TextAlign.Left),

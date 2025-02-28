@@ -25,25 +25,36 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
 
     }
 
-    suspend fun getCharge() : List<ChargeItem> {
+    fun getCharge() : Flow<List<ChargeItem>>{
 
-        val chargesResponse : MutableList<ChargueResponse> = arrayListOf()
-        db.collection(CHARGE_COLLECTION)
-            .get()
-            .addOnSuccessListener { snapshot ->
 
-                Log.d("CIPEGAS CARO CHARGUE", snapshot.toString())
-                for (doc in snapshot){
-                    val chargeResponse = doc.toObject<ChargueResponse>()
-                    chargesResponse.add(chargeResponse)
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("CIPEGAS CARO CHARGUE", "get failed with", exception)
-            }
-            .await()
+        return db.collection(CHARGE_COLLECTION)
+            .snapshots()
+            .map { qs -> qs.toObjects(ChargueResponse::class.java)
+                .mapNotNull { cr -> chargeToDomain(cr) }}
 
-        return chargeToDomain(chargesResponse)
+
+
+//            .get()
+//            .addOnSuccessListener { snapshot ->
+//
+//                Log.d("CIPEGAS CARO CHARGUE", snapshot.toString())
+//                for (doc in snapshot){
+//                    val chargeResponse = doc.toObject<ChargueResponse>()
+//                    chargesResponse.add(chargeResponse)
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.d("CIPEGAS CARO CHARGUE", "get failed with", exception)
+//            }
+//            .addOnCompleteListener {
+//                if(it.isSuccessful){
+//
+//                }
+//            }
+//            .await()
+//
+//        return chargeToDomain(chargesResponse)
     }
 
     fun optionCipegas() : Flow<List<OptionItem>>{
@@ -105,24 +116,38 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return loansDomain
     }
 
-    fun chargeToDomain(chargesResp : List<ChargueResponse>) : List<ChargeItem> {
+//    fun chargeToDomain(chargesResp : List<ChargueResponse>) : List<ChargeItem> {
+//
+//        val clients : MutableList<ClientItem> = arrayListOf()
+//        val chargues : MutableList<ChargeItem> = arrayListOf()
+//        var ci :ChargeItem?
+//        chargesResp.forEach { cl ->
+//
+//            cl.clients?.forEach{ c ->
+//                val cl = ClientItem(c.name,c.amount)
+//                clients.add(cl)
+//            }
+//
+//            ci = ChargeItem(clients,cl.date.toString())
+//            chargues.add(ci!!)
+//
+//        }
+//
+//        return chargues
+//    }
+
+    fun chargeToDomain(chargesResp : ChargueResponse) : ChargeItem {
 
         val clients : MutableList<ClientItem> = arrayListOf()
-        val chargues : MutableList<ChargeItem> = arrayListOf()
-        var ci :ChargeItem?
-        chargesResp.forEach { cl ->
+        val ci :ChargeItem?
 
-            cl.clients?.forEach{ c ->
-                val cl = ClientItem(c.name,c.amount)
-                clients.add(cl)
-            }
-
-            ci = ChargeItem(clients,cl.date.toString())
-            chargues.add(ci!!)
-
+        chargesResp.clients?.forEach { c ->
+            val cl = ClientItem(c.name,c.amount)
+            clients.add(cl)
         }
 
-        return chargues
+        ci = ChargeItem(clients,chargesResp.date.toString())
+        return ci
     }
 
     fun bankToDomain(br: BankResponse) : BankItem?{

@@ -126,7 +126,7 @@ fun RowScope.TableCell(
         Modifier
             .weight(weight)
             .padding(10.dp),
-        fontSize = 14.sp,
+        fontSize = 12.sp,
         fontWeight = if (title) FontWeight.Bold else FontWeight.Normal,
         textAlign = alignment,
     )
@@ -147,7 +147,7 @@ fun RowScope.TableCellItem(
             .weight(weight)
             .padding(10.dp),
         color = color,
-        fontSize = 14.sp,
+        fontSize = 12.sp,
         fontWeight = if (state) FontWeight.Bold else FontWeight.Normal,
         textAlign = alignment,
     )

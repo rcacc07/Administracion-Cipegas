@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1074953426842:android:aa26fbcbc924837cbdcc23",
+        "android_client_info": {
+          "package_name": "com.cipegas.administracion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXlByd86NGMtaD4shdZFvnLbxlEGOBQyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1074953426842:android:a9d9fa5662cafad9bdcc23",
         "android_client_info": {
           "package_name": "com.cipegas.administracion.debug"

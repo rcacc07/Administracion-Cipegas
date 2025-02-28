@@ -19,7 +19,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -68,18 +70,22 @@ fun CardBankItem(bank: BankItem) {
             .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column {
-            Text(text = bank.name, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(6.dp))
-            ///Text(text = bank.date, fontSize = 14.sp)
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        val amount = String.format("%-,10.2f", bank.amount)
+        Text(
+            text = bank.name.toString(),
+            modifier = Modifier.weight(2f),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            style = TextStyle(textAlign = TextAlign.Left),
+            fontSize = 12.sp)
 
         Text(
-            text = "S/. $amount",
+            text = "S/.".plus(String.format("%-,20.2f", bank.amount)).trim(),
+            modifier = Modifier.weight(1f)
+                .fillMaxWidth(),
             color = Color.Red,
+            style = TextStyle(textAlign = TextAlign.Left),
             fontWeight = FontWeight.Bold,
             fontSize = 12.sp)
+
     }
 }
