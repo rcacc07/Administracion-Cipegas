@@ -8,6 +8,7 @@ import com.cipegas.administracion.presentation.BankScreen
 import com.cipegas.administracion.presentation.CobranzasScreen
 import com.cipegas.administracion.presentation.OptionScreen
 import com.cipegas.administracion.presentation.PrestamosScreen
+import com.cipegas.administracion.presentation.ProviderScreen
 
 @Composable
 fun NavManager(navigationController : NavHostController){
@@ -29,6 +30,9 @@ fun NavManager(navigationController : NavHostController){
         composable(Routes.Chargue.route){
             CobranzasScreen()
         }
+        composable(Routes.Providers.route){
+            ProviderScreen()
+        }
     }
 }
 
@@ -44,4 +48,5 @@ sealed class Routes(val route : String){
     object Bank : Routes("Banks")
     object Loans : Routes("Loans")
     object Chargue : Routes("Chargue")
+    object Providers : Routes("Providers")
 }

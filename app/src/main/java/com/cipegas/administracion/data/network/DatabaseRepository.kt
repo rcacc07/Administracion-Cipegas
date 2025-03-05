@@ -2,10 +2,12 @@ package com.cipegas.administracion.data.network
 
 import android.util.Log
 import com.cipegas.administracion.domain.model.BankItem
+import com.cipegas.administracion.domain.model.BillItem
 import com.cipegas.administracion.domain.model.ChargeItem
 import com.cipegas.administracion.domain.model.ClientItem
 import com.cipegas.administracion.domain.model.LoanItem
 import com.cipegas.administracion.domain.model.OptionItem
+import com.cipegas.administracion.domain.model.ProviderItem
 import com.cipegas.administracion.domain.model.QuotaItem
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.snapshots
@@ -22,6 +24,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         const val LOANS_COLLECTION = "prestamos"
         const val OPTION_COLLECTION = "opciones"
         const val CHARGE_COLLECTION = "cobranzas"
+        const val PROVIDER_COLLECTION = "provedores"
 
     }
 
@@ -85,6 +88,26 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return loansToDomain(loansResponse)
     }
 
+    suspend fun getProviders() : List<ProviderItem> {
+
+        val providersResponse : MutableList<ProviderResponse> = arrayListOf()
+
+        db.collection(PROVIDER_COLLECTION)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                for (document in snapshot){
+                    val providerResponse = document.toObject<ProviderResponse>()
+                    providersResponse.add(providerResponse)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("CIPEGAS CARO", "get failed with", exception)
+            }
+            .await()
+
+        return providersToDomain(providersResponse)
+    }
+
     fun getBanks() : Flow<List<BankItem>>{
         return db.collection(USER_COLLECTION)
             .snapshots()
@@ -92,8 +115,6 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
                 bankToDomain(bankResponse) }
             }
     }
-
-
 
     fun loansToDomain(loansResp: List<LoanResponse>) : List<LoanItem>{
 
@@ -116,25 +137,26 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return loansDomain
     }
 
-//    fun chargeToDomain(chargesResp : List<ChargueResponse>) : List<ChargeItem> {
-//
-//        val clients : MutableList<ClientItem> = arrayListOf()
-//        val chargues : MutableList<ChargeItem> = arrayListOf()
-//        var ci :ChargeItem?
-//        chargesResp.forEach { cl ->
-//
-//            cl.clients?.forEach{ c ->
-//                val cl = ClientItem(c.name,c.amount)
-//                clients.add(cl)
-//            }
-//
-//            ci = ChargeItem(clients,cl.date.toString())
-//            chargues.add(ci!!)
-//
-//        }
-//
-//        return chargues
-//    }
+    fun providersToDomain(providersResp: List<ProviderResponse>) : List<ProviderItem>{
+
+        val providersDomain : MutableList<ProviderItem> = arrayListOf()
+
+        providersResp.forEach { l ->
+
+            val facts : MutableList<BillItem> = arrayListOf()
+
+            l.facts?.forEach { q ->
+                val qi = BillItem(q.amount,q.date,q.expirationDate,q.number,q.product,q.state)
+                facts.add(qi)
+            }
+
+            val pi = ProviderItem(facts,l.name.toString())
+            providersDomain.add(pi)
+
+        }
+
+        return providersDomain
+    }
 
     fun chargeToDomain(chargesResp : ChargueResponse) : ChargeItem {
 

@@ -83,7 +83,7 @@ fun OptionsList(optiones : List<OptionItem>, paddingValues: PaddingValues ,
                 val result = when(item.id){
                     1 -> "Chargue"
                     2 -> "Banks"
-                    3 -> "Pagos"
+                    3 -> "Providers"
                     else -> "Loans"
                 }
 
