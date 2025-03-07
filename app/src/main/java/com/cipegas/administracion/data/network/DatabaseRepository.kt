@@ -146,11 +146,11 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             val facts : MutableList<BillItem> = arrayListOf()
 
             l.facts?.forEach { q ->
-                val qi = BillItem(q.amount,q.date,q.expirationDate,q.number,q.product,q.state)
+                val qi = BillItem(q.amount,q.date,q.expirationDate,q.number,q.product,q.state,q.client)
                 facts.add(qi)
             }
 
-            val pi = ProviderItem(facts,l.name.toString())
+            val pi = ProviderItem(facts,l.name.toString(),0.0)
             providersDomain.add(pi)
 
         }

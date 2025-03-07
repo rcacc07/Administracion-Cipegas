@@ -2,5 +2,6 @@ package com.cipegas.administracion.domain.model
 
 data class ProviderItem(
     val fatcs : List<BillItem>,
-    val name : String
+    val name : String,
+    var amountTotal : Double
 )
