@@ -71,7 +71,7 @@ fun CardBankItem(bank: BankItem) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = bank.name.toString(),
+            text = bank.name.trim(),
             modifier = Modifier.weight(2f),
             color = Color.Black,
             fontWeight = FontWeight.Bold,

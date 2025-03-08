@@ -60,9 +60,6 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
     ) {
-        //val amount = it.amount.toString().toDouble()
-        //val dec = DecimalFormat("#,###.00")
-
         providers.forEach { p->
             var sumTotal = 0.0
             p.fatcs.forEach {
@@ -120,38 +117,52 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TableCellProvider(text = "Num Fact", weight = .1f, alignment = TextAlign.Center, title = true)
-                    TableCellProvider(text = "Fecha Emision", weight = .1f, alignment = TextAlign.Center, title = true)
-                    TableCellProvider(text = "Monto", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellProvider(text = "NUM FACT", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellProvider(text = "FECHA EMISION", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellProvider(text = "MONTO", weight = .2f, alignment = TextAlign.Center, title = true)
                 }
             }
 
             items(sectionedItem.fatcs){ it ->
 
                 Row {
-                    TableCellProvider(text = it.number.toString(), weight = .1f,alignment = TextAlign.Center)
-
-                    TableCellProvider(text = it.date.toString(), weight = .1f,alignment = TextAlign.Center)
-
+                    TableCellProvider(text = it.number.toString(), weight = .2f,alignment = TextAlign.Center)
                     Column (
                         modifier = Modifier
                             .weight(.2f)
                             .fillMaxWidth()
-
                     ) {
-
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = it.client.toString().trim(),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = it.date.toString().trim(),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Column (
+                        modifier = Modifier
+                            .weight(.2f)
+                            .fillMaxWidth()
+                    ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = "S/.".plus(String.format("%-,20.2f", it.amount)).trim(),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
-
                         )
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.state.toString().trim(),
-                            fontSize = 8.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
@@ -200,7 +211,7 @@ fun RowScope.TableCellProviderItem(
     alignment: TextAlign = TextAlign.Center,
     ){
 
-    val color = if (textState.contentEquals("Pagado")) Color.Black else Color.Red
+    val color = if (textState.equals("Pagado",true)) Color.Black else Color.Red
 
         Text(
             text = textAmount ,

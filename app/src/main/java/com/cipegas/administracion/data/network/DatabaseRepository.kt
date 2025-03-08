@@ -129,7 +129,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
                 quotas.add(qi)
             }
 
-            val li = LoanItem( quotas , l.title.toString(), l.fecDesem.toString())
+            val li = LoanItem( quotas , l.title.toString(), l.fecDesem.toString(),l.amount.toString())
             loansDomain.add(li)
 
         }

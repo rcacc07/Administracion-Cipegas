@@ -1,6 +1,7 @@
 package com.cipegas.administracion.presentation
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -29,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.LoanItem
 import java.text.DecimalFormat
@@ -50,6 +52,7 @@ fun PrestamosScreen(loanViewModel: LoanViewModel  = hiltViewModel()) {
     }
 }
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
@@ -60,23 +63,43 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
         loans.forEachIndexed{ index,sectionedItem ->
 
             stickyHeader {
-                Column (
+                Row(
                     modifier = Modifier
                         .height(60.dp)
+                        .fillMaxHeight()
                         .fillMaxWidth()
-                        .background(Color.LightGray)
-                ){
-                    Box(modifier = Modifier.padding(4.dp))
-                    {
-                        Text(text = (index+1).toString() +" "+sectionedItem.title,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold)
 
+                        .background(Color.LightGray),
+                    verticalAlignment = Alignment.CenterVertically)
+                {
+                    Text(
+                        text = (index+1).toString() +". "+sectionedItem.title,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                        )
+                    Column (
+                        modifier = Modifier
+                        .fillMaxHeight()
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                       )
+                    {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = "S/.".plus(String.format("%-,20.2f", sectionedItem.amount)).trim(),
+                            fontSize = 12.sp
+                        )
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = sectionedItem.fecDesem,
+                            fontSize = 12.sp
+                        )
 
                     }
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(text = sectionedItem.fecDesem, fontSize = 16.sp)
+
                 }
+
+
             }
 
             item {
@@ -84,9 +107,9 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TableCell(text = "Fecha Ven", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCell(text = "Monto", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCell(text = "Estado", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCell(text = "FECHA VEN", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCell(text = "MONTO", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCell(text = "ESTADO", weight = .2f, alignment = TextAlign.Center, title = true)
                 }
             }
             items(sectionedItem.quotas){ it ->
@@ -139,7 +162,7 @@ fun RowScope.TableCellItem(
     alignment: TextAlign = TextAlign.Center,
     state: Boolean = false){
 
-    val color = if (text.toString().equals("Pagado")) Color.Black else Color.Red
+    val color = if (text.equals("pagado",true)) Color.Black else Color.Red
 
     Text(
         text = text,
