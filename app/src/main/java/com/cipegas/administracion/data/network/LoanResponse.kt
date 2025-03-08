@@ -5,6 +5,6 @@ data class LoanResponse(
     val quotas : List<CuotaResponse> ?= null,
     val title : String ?= null,
     val fecDesem : String ?= null,
-    val amount : String ?= null,
+    val amount : Double = 0.0,
 
 )

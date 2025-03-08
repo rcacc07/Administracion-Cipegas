@@ -74,42 +74,35 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
         providers.forEachIndexed{ index,sectionedItem ->
 
             stickyHeader {
-                Column (
+                Row(
                     modifier = Modifier
                         .height(60.dp)
+                        .fillMaxHeight()
                         .fillMaxWidth()
                         .background(Color.LightGray)
-
-                ){
-                    Row(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .fillMaxHeight(),
-                        verticalAlignment = Alignment.CenterVertically
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
                     )
-                    {
-                        Text(
-                            text = (index+1).toString() +". "+sectionedItem.name,
-                            fontSize = 16.sp,
-                            modifier = Modifier.weight(4f),
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Left
-                        )
+                {
+                    Text(
+                        text = (index+1).toString() +". "+sectionedItem.name,
+                        fontSize = 16.sp,
+                        modifier = Modifier.weight(4f),
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Left
+                    )
 
+                    val formatter = DecimalFormat("#,###,##0.00")
+                    val amountTotal = formatter.format(sectionedItem.amountTotal)
 
-                        val formatter = DecimalFormat("#,###,##0.00")
-                        val amountTotal = formatter.format(sectionedItem.amountTotal)
-
-                        Text(
-                            text = "S./".plus(amountTotal),
-                            fontSize = 16.sp,
-                            modifier = Modifier.weight(2f),
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                    Text(
+                        text = "S./".plus(amountTotal),
+                        fontSize = 16.sp,
+                        modifier = Modifier.weight(2f),
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
                         )
                     }
-
-                }
             }
 
             item {

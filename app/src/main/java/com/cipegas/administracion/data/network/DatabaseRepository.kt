@@ -25,39 +25,13 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         const val OPTION_COLLECTION = "opciones"
         const val CHARGE_COLLECTION = "cobranzas"
         const val PROVIDER_COLLECTION = "provedores"
-
     }
 
     fun getCharge() : Flow<List<ChargeItem>>{
-
-
         return db.collection(CHARGE_COLLECTION)
             .snapshots()
             .map { qs -> qs.toObjects(ChargueResponse::class.java)
                 .mapNotNull { cr -> chargeToDomain(cr) }}
-
-
-
-//            .get()
-//            .addOnSuccessListener { snapshot ->
-//
-//                Log.d("CIPEGAS CARO CHARGUE", snapshot.toString())
-//                for (doc in snapshot){
-//                    val chargeResponse = doc.toObject<ChargueResponse>()
-//                    chargesResponse.add(chargeResponse)
-//                }
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.d("CIPEGAS CARO CHARGUE", "get failed with", exception)
-//            }
-//            .addOnCompleteListener {
-//                if(it.isSuccessful){
-//
-//                }
-//            }
-//            .await()
-//
-//        return chargeToDomain(chargesResponse)
     }
 
     fun optionCipegas() : Flow<List<OptionItem>>{
@@ -129,7 +103,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
                 quotas.add(qi)
             }
 
-            val li = LoanItem( quotas , l.title.toString(), l.fecDesem.toString(),l.amount.toString())
+            val li = LoanItem( quotas , l.title.toString(), l.fecDesem.toString(),l.amount)
             loansDomain.add(li)
 
         }

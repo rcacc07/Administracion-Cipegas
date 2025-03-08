@@ -20,8 +20,8 @@ class HomeViewModel @Inject constructor(val db : DatabaseRepository) : ViewModel
     init {
         viewModelScope.launch {
             db.getBanks().collect{ banks ->
-                _uiState.update {
-                    it.copy(
+                _uiState.update { state ->
+                    state.copy(
                         banks = banks,
                         totalAmount =   banks.sumOf { it.amount }.toString().format("%.2f$")
                     )

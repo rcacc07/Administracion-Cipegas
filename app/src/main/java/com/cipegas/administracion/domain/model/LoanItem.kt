@@ -4,5 +4,5 @@ data class LoanItem(
     val quotas : List<QuotaItem>,
     val title : String,
     val fecDesem : String,
-    val amount : String
+    val amount : Double = 0.0
 )

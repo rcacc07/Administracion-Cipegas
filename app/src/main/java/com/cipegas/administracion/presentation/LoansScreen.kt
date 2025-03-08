@@ -68,17 +68,19 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
                         .height(60.dp)
                         .fillMaxHeight()
                         .fillMaxWidth()
-
-                        .background(Color.LightGray),
-                    verticalAlignment = Alignment.CenterVertically)
-                {
+                        .background(Color.LightGray)
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
+                        modifier = Modifier.weight(2f),
                         text = (index+1).toString() +". "+sectionedItem.title,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                         )
                     Column (
                         modifier = Modifier
+                            .weight(1f)
                         .fillMaxHeight()
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -98,8 +100,6 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
                     }
 
                 }
-
-
             }
 
             item {
