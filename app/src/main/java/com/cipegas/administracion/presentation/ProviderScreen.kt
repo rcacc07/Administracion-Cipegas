@@ -128,14 +128,14 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.client.toString().trim(),
-                            fontSize = 10.sp,
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.date.toString().trim(),
-                            fontSize = 10.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
                         )
@@ -148,14 +148,18 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = "S/.".plus(String.format("%-,20.2f", it.amount)).trim(),
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
                         )
+
+                        val textColor = if (it.state.toString().trim().equals("Pagado",true)) Color.Black else Color.Red
+
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.state.toString().trim(),
-                            fontSize = 10.sp,
+                            color = textColor,
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
@@ -204,7 +208,7 @@ fun RowScope.TableCellProviderItem(
     alignment: TextAlign = TextAlign.Center,
     ){
 
-    val color = if (textState.equals("Pagado",true)) Color.Black else Color.Red
+    val color = if (textState.equals("Pagado",true)) Color.Red else Color.Black
 
         Text(
             text = textAmount ,

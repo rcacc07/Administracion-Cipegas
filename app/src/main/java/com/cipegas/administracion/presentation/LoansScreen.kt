@@ -89,12 +89,14 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
                         Text(
                             modifier = Modifier.weight(1f),
                             text = "S/.".plus(String.format("%-,20.2f", sectionedItem.amount)).trim(),
-                            fontSize = 12.sp
+                            fontSize = 12.sp ,
+                            fontWeight = FontWeight.Bold
                         )
                         Text(
                             modifier = Modifier.weight(1f),
                             text = sectionedItem.fecDesem,
-                            fontSize = 12.sp
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
                         )
 
                     }
