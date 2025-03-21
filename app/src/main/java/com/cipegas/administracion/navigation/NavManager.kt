@@ -2,9 +2,12 @@ package com.cipegas.administracion.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.cipegas.administracion.presentation.BankScreen
+import com.cipegas.administracion.presentation.BillScreen
 import com.cipegas.administracion.presentation.CobranzasScreen
 import com.cipegas.administracion.presentation.OptionScreen
 import com.cipegas.administracion.presentation.PrestamosScreen
@@ -28,10 +31,27 @@ fun NavManager(navigationController : NavHostController){
             PrestamosScreen()
         }
         composable(Routes.Chargue.route){
-            CobranzasScreen()
+            CobranzasScreen(navigateToBills = {id ->
+                navigationController.navigate(Routes.Bills.createRoute(id))
+            })
         }
         composable(Routes.Providers.route){
             ProviderScreen()
+        }
+        composable(
+            route = Routes.Bills.route,
+            arguments = listOf(
+                navArgument(name = "idClient"){
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
+        ){ back ->
+            val idClient = back.arguments?.getString("idClient")
+            idClient.let { id ->
+                BillScreen(idClient)
+            }
+
         }
     }
 }
@@ -49,4 +69,8 @@ sealed class Routes(val route : String){
     object Loans : Routes("Loans")
     object Chargue : Routes("Chargue")
     object Providers : Routes("Providers")
+    object Bills : Routes("Bills/{idClient}"){
+
+        fun createRoute(idClient : String) = "Bills/$idClient"
+    }
 }

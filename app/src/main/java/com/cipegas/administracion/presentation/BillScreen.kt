@@ -29,34 +29,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cipegas.administracion.components.MainTopBar
-import com.cipegas.administracion.domain.model.ProviderItem
+import com.cipegas.administracion.domain.model.FactsItem
 import java.text.DecimalFormat
 
-
 @Composable
-fun ProviderScreen(providerViewModel: ProviderViewModel = hiltViewModel()) {
+fun BillScreen(idClient:String?,billViewModel : BillViewModel = hiltViewModel()){
 
-    val uiState : ProviderState by providerViewModel.uiState.collectAsState()
+    val uiState : BillState by billViewModel.uiState.collectAsState()
+    uiState.idClient = idClient.toString()
 
     Scaffold(
         topBar = {
-            MainTopBar(title = "Provedores" , onClickBackButton = {}) { }
+            MainTopBar(title = "Facturas" , onClickBackButton = {}) { }
         }
     ) {
-        Providers(uiState.providers,it)
-
+        bills(uiState.bills,it)
     }
+
 }
 
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
+fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
 
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
     ) {
-        providers.forEach { p->
+        bills.forEach { p->
             var sumTotal = 0.0
             p.fatcs.forEach {
                 if (it.state.equals("pendiente",true)) {
@@ -67,7 +67,7 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
             p.amountTotal = sumTotal
         }
 
-        providers.forEachIndexed{ index,sectionedItem ->
+        bills.forEachIndexed{ index,sectionedItem ->
 
             stickyHeader {
                 Row(
@@ -78,7 +78,7 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                         .background(Color.LightGray)
                         .padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically
-                    )
+                )
                 {
                     Text(
                         text = (index+1).toString() +". "+sectionedItem.name,
@@ -97,8 +97,8 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                         modifier = Modifier.weight(2f),
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
-                        )
-                    }
+                    )
+                }
             }
 
             item {
@@ -106,16 +106,16 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TableCellProvider(text = "NUM FACT", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCellProvider(text = "FECHA EMISION", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCellProvider(text = "MONTO", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellBillProvider(text = "NUM FACT", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellBillProvider(text = "FECHA EMISION", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellBillProvider(text = "MONTO", weight = .2f, alignment = TextAlign.Center, title = true)
                 }
             }
 
             items(sectionedItem.fatcs){ it ->
 
                 Row {
-                    TableCellProvider(text = it.number.toString(), weight = .2f,alignment = TextAlign.Center)
+                    TableCellBillProvider(text = it.number.toString(), weight = .2f,alignment = TextAlign.Center)
                     Column (
                         modifier = Modifier
                             .weight(.2f)
@@ -179,7 +179,7 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
 }
 
 @Composable
-fun RowScope.TableCellProvider(
+fun RowScope.TableCellBillProvider(
     text:String,
     weight : Float,
     alignment: TextAlign = TextAlign.Center,
@@ -197,37 +197,33 @@ fun RowScope.TableCellProvider(
 }
 
 @Composable
-fun RowScope.TableCellProviderItem(
+fun RowScope.TableCellBillProviderItem(
     textAmount:String,
     textState:String,
     weight : Float,
     alignment: TextAlign = TextAlign.Center,
-    ){
+){
 
     val color = if (textState.equals("Pagado",true)) Color.Red else Color.Black
 
-        Text(
-            text = textAmount ,
-            Modifier
-                .weight(weight)
-                .padding(10.dp),
-            color = color,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = alignment,
-        )
-        Text(
-            text = textState,
-            Modifier
-                .weight(weight)
-                .padding(10.dp),
-            color = color,
-            fontSize = 8.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = alignment,
-        )
-
-
-
-
+    Text(
+        text = textAmount ,
+        Modifier
+            .weight(weight)
+            .padding(10.dp),
+        color = color,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = alignment,
+    )
+    Text(
+        text = textState,
+        Modifier
+            .weight(weight)
+            .padding(10.dp),
+        color = color,
+        fontSize = 8.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = alignment,
+    )
 }

@@ -1,6 +1,7 @@
 package com.cipegas.administracion.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,7 +29,9 @@ import java.text.DecimalFormat
 
 
 @Composable
-fun CobranzasScreen(cobranzasVM: CobranzaViewModel = hiltViewModel()) {
+fun CobranzasScreen(
+    cobranzasVM: CobranzaViewModel = hiltViewModel(),
+    navigateToBills : (String) -> Unit) {
 
     val uiState : CobranzasUiState by cobranzasVM.uiState.collectAsState()
     Scaffold (
@@ -39,13 +42,17 @@ fun CobranzasScreen(cobranzasVM: CobranzaViewModel = hiltViewModel()) {
         }
     ){
         if(uiState.charge.isNotEmpty()){
-            Cobranzas(uiState.charge.get(0).clients,it)
+            Cobranzas(uiState.charge.get(0).clients,it,
+                onSelectedOption = { id ->
+                    navigateToBills(id)
+                })
         }
     }
 }
 
 @Composable
-fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
+fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues ,
+              onSelectedOption: (String) -> Unit) {
 
     var suma = 0.0
 
@@ -55,7 +62,9 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
     ) {
         items(client){ client ->
             suma += client.amount
-            CardCobranzasItem(client)
+            CardCobranzasItem(client , onClick = {
+                onSelectedOption(client.id.toString())
+            })
         }
 
         item {
@@ -94,30 +103,34 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues) {
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardCobranzasItem(client: ClientItem) {
+fun CardCobranzasItem(client: ClientItem , onClick : () -> Unit) {
 
-    Row(
-        modifier = Modifier
+
+        Row (modifier = Modifier
+            .clickable(onClick = onClick)
             .fillMaxWidth()
             .padding(8.dp)
-            .wrapContentHeight(),
-       horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = client.name.toString(),
-            modifier = Modifier.weight(2f),
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            style = TextStyle(textAlign = TextAlign.Left),
-            fontSize = 12.sp)
+            .wrapContentHeight()
+        ){
 
-        Text(
-            text = "S/.".plus(String.format("%-,20.2f", client.amount)).trim(),
-            modifier = Modifier.weight(1f)
-                .fillMaxWidth(),
-            color = Color.Red,
-            style = TextStyle(textAlign = TextAlign.Left),
-            fontWeight = FontWeight.Bold,
-            fontSize = 12.sp)
-    }
+            Text(
+                text = client.name.toString(),
+                modifier = Modifier.weight(2f),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                style = TextStyle(textAlign = TextAlign.Left),
+                fontSize = 12.sp)
+
+            Text(
+                text = "S/.".plus(String.format("%-,20.2f", client.amount)).trim(),
+                modifier = Modifier.weight(1f)
+                    .fillMaxWidth(),
+                color = Color.Red,
+                style = TextStyle(textAlign = TextAlign.Left),
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp)
+
+        }
+
+
 }

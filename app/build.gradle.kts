@@ -1,10 +1,12 @@
 plugins {
+
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     alias(libs.plugins.androidHilt)
     alias(libs.plugins.googleServices)
+    kotlin("plugin.serialization") version "2.1.20"
 }
 
 android {
@@ -58,7 +60,8 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
 
     //Navigation
-    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
     //Coil
     implementation("io.coil-kt:coil-compose:1.4.0")
