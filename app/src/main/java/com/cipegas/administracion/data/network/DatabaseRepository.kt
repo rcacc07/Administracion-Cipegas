@@ -5,6 +5,7 @@ import com.cipegas.administracion.domain.model.BankItem
 import com.cipegas.administracion.domain.model.BillItem
 import com.cipegas.administracion.domain.model.ChargeItem
 import com.cipegas.administracion.domain.model.ClientItem
+import com.cipegas.administracion.domain.model.FactsItem
 import com.cipegas.administracion.domain.model.LoanItem
 import com.cipegas.administracion.domain.model.OptionItem
 import com.cipegas.administracion.domain.model.ProviderItem
@@ -25,6 +26,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         const val OPTION_COLLECTION = "opciones"
         const val CHARGE_COLLECTION = "cobranzas"
         const val PROVIDER_COLLECTION = "provedores"
+        const val BILLS_COLLECTION = "facturas"
     }
 
     fun getCharge() : Flow<List<ChargeItem>>{
@@ -32,6 +34,13 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             .snapshots()
             .map { qs -> qs.toObjects(ChargueResponse::class.java)
                 .mapNotNull { cr -> chargeToDomain(cr) }}
+    }
+
+    fun getBills(idCLient : String) : Flow<List<FactsItem>>{
+        return db.collection(BILLS_COLLECTION).whereEqualTo("id",idCLient)
+            .snapshots()
+            .map { qs -> qs.toObjects(OweResponse::class.java)
+                .mapNotNull { cr -> oweToDomain(cr) }}
     }
 
     fun optionCipegas() : Flow<List<OptionItem>>{
@@ -120,7 +129,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             val facts : MutableList<BillItem> = arrayListOf()
 
             l.facts?.forEach { q ->
-                val qi = BillItem(q.amount,q.date,q.expirationDate,q.number,q.product,q.state,q.client)
+                val qi = BillItem(q.amount,q.date,q.expirationDate,q.numero,q.product,q.state,q.client)
                 facts.add(qi)
             }
 
@@ -138,7 +147,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         val ci :ChargeItem?
 
         chargesResp.clients?.forEach { c ->
-            val cl = ClientItem(c.name,c.amount)
+            val cl = ClientItem(c.name,c.amount,c.id)
             clients.add(cl)
         }
 
@@ -146,7 +155,21 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return ci
     }
 
-    fun bankToDomain(br: BankResponse) : BankItem?{
+    private fun oweToDomain(oweResp : OweResponse) : FactsItem {
+
+        val facts : MutableList<BillItem> = arrayListOf()
+        val ci :FactsItem?
+
+        oweResp.facts?.forEach { c ->
+            val cl = BillItem(c.amount,c.date,c.expirationDate,c.numero,c.product,c.state,c.client)
+            facts.add(cl)
+        }
+
+        ci = FactsItem(facts,oweResp.id.toString(),oweResp.name.toString(),0.0)
+        return ci
+    }
+
+    private fun bankToDomain(br: BankResponse) : BankItem{
         val bm = BankItem(id = br.id.toString(),
             name = br.name.toString(),
             amount = br.amount ?: 0.0,
@@ -155,9 +178,9 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return bm
     }
 
-    fun optionDomain(op : OptionResponse) : OptionItem {
-        val op = OptionItem(id = op.id ?: 0,
+    private fun optionDomain(op : OptionResponse) : OptionItem {
+        val opi = OptionItem(id = op.id ?: 0,
             name = op.opcion.toString())
-        return op
+        return opi
     }
 }

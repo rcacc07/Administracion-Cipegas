@@ -41,16 +41,10 @@ fun NavManager(navigationController : NavHostController){
         composable(
             route = Routes.Bills.route,
             arguments = listOf(
-                navArgument(name = "idClient"){
-                    type = NavType.StringType
-                    nullable = true
-                }
+                navArgument(name = "idClient"){ type = NavType.StringType}
             )
-        ){ back ->
-            val idClient = back.arguments?.getString("idClient")
-            idClient.let { id ->
-                BillScreen(idClient)
-            }
+        ){
+            BillScreen(idClient = it.arguments?.getString("idClient").orEmpty())
 
         }
     }

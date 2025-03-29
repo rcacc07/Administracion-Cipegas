@@ -18,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,17 +34,22 @@ import com.cipegas.administracion.domain.model.FactsItem
 import java.text.DecimalFormat
 
 @Composable
-fun BillScreen(idClient:String?,billViewModel : BillViewModel = hiltViewModel()){
+fun BillScreen(billViewModel : BillViewModel = hiltViewModel(),
+               idClient:String){
 
     val uiState : BillState by billViewModel.uiState.collectAsState()
-    uiState.idClient = idClient.toString()
 
+    LaunchedEffect(true) {
+        billViewModel.loadBillsCLient(idClient)
+    }
     Scaffold(
         topBar = {
-            MainTopBar(title = "Facturas" , onClickBackButton = {}) { }
+            MainTopBar(title = "Facturas" , showBackButton = true, onClickBackButton = {
+                billViewModel.backView()
+            }) { }
         }
     ) {
-        bills(uiState.bills,it)
+        Bills(uiState.bills,it)
     }
 
 }
@@ -51,7 +57,7 @@ fun BillScreen(idClient:String?,billViewModel : BillViewModel = hiltViewModel())
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
+fun Bills(bills : List<FactsItem> , paddingValues: PaddingValues){
 
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
@@ -81,8 +87,8 @@ fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                 )
                 {
                     Text(
-                        text = (index+1).toString() +". "+sectionedItem.name,
-                        fontSize = 16.sp,
+                        text = sectionedItem.name,
+                        fontSize = 14.sp,
                         modifier = Modifier.weight(4f),
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Left
@@ -91,9 +97,10 @@ fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                     val formatter = DecimalFormat("#,###,##0.00")
                     val amountTotal = formatter.format(sectionedItem.amountTotal)
 
+
                     Text(
                         text = "S./".plus(amountTotal),
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         modifier = Modifier.weight(2f),
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
@@ -107,15 +114,13 @@ fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TableCellBillProvider(text = "NUM FACT", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCellBillProvider(text = "FECHA EMISION", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellBillProvider(text = "DESCRIPCION", weight = .2f, alignment = TextAlign.Center, title = true)
                     TableCellBillProvider(text = "MONTO", weight = .2f, alignment = TextAlign.Center, title = true)
                 }
             }
 
             items(sectionedItem.fatcs){ it ->
-
                 Row {
-                    TableCellBillProvider(text = it.number.toString(), weight = .2f,alignment = TextAlign.Center)
                     Column (
                         modifier = Modifier
                             .weight(.2f)
@@ -123,14 +128,35 @@ fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = it.client.toString().trim(),
-                            fontSize = 11.sp,
+                            text = it.numero.toString().trim(),
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.date.toString().trim(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                    Column (
+                        modifier = Modifier
+                            .weight(.2f)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = it.product.toString().trim(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = it.expirationDate.toString().trim(),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
@@ -155,7 +181,7 @@ fun bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                             modifier = Modifier.fillMaxWidth(),
                             text = it.state.toString().trim(),
                             color = textColor,
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )

@@ -115,7 +115,7 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
             items(sectionedItem.fatcs){ it ->
 
                 Row {
-                    TableCellProvider(text = it.number.toString(), weight = .2f,alignment = TextAlign.Center)
+                    TableCellProvider(text = it.numero.toString(), weight = .2f,alignment = TextAlign.Center)
                     Column (
                         modifier = Modifier
                             .weight(.2f)

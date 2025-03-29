@@ -30,6 +30,8 @@ class CobranzaViewModel @Inject constructor(val db : DatabaseRepository) : ViewM
         }
 
     }
+
+
 }
 
 data class CobranzasUiState(
