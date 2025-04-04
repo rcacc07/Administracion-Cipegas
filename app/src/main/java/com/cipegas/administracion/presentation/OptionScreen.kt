@@ -56,14 +56,11 @@ fun OptionsGridItem(title : String , onClick: () -> Unit){
             .padding(8.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(5.dp),
-
         ) {
         Text(
-            modifier = Modifier.padding(8.dp)
-                .align(alignment = Alignment.CenterHorizontally),
+            modifier = Modifier.padding(8.dp).align(alignment = Alignment.CenterHorizontally),
             text = title,
             color = Color.Red
-
         )
     }
 }

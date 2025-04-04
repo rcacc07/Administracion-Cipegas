@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cipegas.administracion.components.MainTopBar
+import com.cipegas.administracion.domain.model.ChargeItem
 import com.cipegas.administracion.domain.model.ClientItem
 import java.text.DecimalFormat
 
@@ -31,18 +32,23 @@ import java.text.DecimalFormat
 @Composable
 fun CobranzasScreen(
     cobranzasVM: CobranzaViewModel = hiltViewModel(),
-    navigateToBills : (String) -> Unit) {
+    navigateToBills : (String) -> Unit,
+    navigateToBack : () -> Unit ) {
 
     val uiState : CobranzasUiState by cobranzasVM.uiState.collectAsState()
     Scaffold (
         topBar = {
-            MainTopBar(title = "COBRANZAS" , onClickBackButton = {}) {
+            MainTopBar(
+                title = "COBRANZAS" ,
+                showBackButton = true ,
+                onClickBackButton = { navigateToBack()}
+            ) {
                 //
             }
         }
     ){
-        if(uiState.charge.isNotEmpty()){
-            Cobranzas(uiState.charge.get(0).clients,it,
+        if(uiState.charges.isNotEmpty()){
+            Cobranzas(uiState.charges,it,
                 onSelectedOption = { id ->
                     navigateToBills(id)
                 })
@@ -51,7 +57,7 @@ fun CobranzasScreen(
 }
 
 @Composable
-fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues ,
+fun Cobranzas(chargues: List<ChargeItem>, paddingValues: PaddingValues,
               onSelectedOption: (String) -> Unit) {
 
     var suma = 0.0
@@ -60,8 +66,8 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues ,
         modifier = Modifier
             .padding(paddingValues)
     ) {
-        items(client){ client ->
-            suma += client.amount
+        items(chargues){ client ->
+            suma += client.amountTot
             CardCobranzasItem(client , onClick = {
                 onSelectedOption(client.id.toString())
             })
@@ -103,7 +109,7 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues ,
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardCobranzasItem(client: ClientItem , onClick : () -> Unit) {
+fun CardCobranzasItem(chargue: ChargeItem , onClick : () -> Unit) {
 
 
         Row (modifier = Modifier
@@ -114,7 +120,7 @@ fun CardCobranzasItem(client: ClientItem , onClick : () -> Unit) {
         ){
 
             Text(
-                text = client.name.toString(),
+                text = chargue.name.toString(),
                 modifier = Modifier.weight(2f),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
@@ -122,7 +128,7 @@ fun CardCobranzasItem(client: ClientItem , onClick : () -> Unit) {
                 fontSize = 14.sp)
 
             Text(
-                text = "S/.".plus(String.format("%-,20.2f", client.amount)).trim(),
+                text = "S/.".plus(String.format("%-,20.2f", chargue.amountTot)).trim(),
                 modifier = Modifier.weight(1f)
                     .fillMaxWidth(),
                 color = Color.Red,

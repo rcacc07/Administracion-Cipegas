@@ -36,7 +36,8 @@ import java.text.DecimalFormat
 
 @Composable
 fun BillScreen(billViewModel : BillViewModel = hiltViewModel(),
-               idClient:String){
+               idClient:String,
+               navigateToBack : () -> Unit ){
 
     val uiState : BillState by billViewModel.uiState.collectAsState()
 
@@ -45,9 +46,11 @@ fun BillScreen(billViewModel : BillViewModel = hiltViewModel(),
     }
     Scaffold(
         topBar = {
-            MainTopBar(title = "Facturas" , showBackButton = true, onClickBackButton = {
-                billViewModel.backView()
-            }) { }
+            MainTopBar(
+                title = "Facturas" ,
+                showBackButton = true,
+                onClickBackButton = {navigateToBack() }
+            ) { }
         }
     ) {
         Bills(uiState.bills,it)

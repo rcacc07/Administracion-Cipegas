@@ -4,13 +4,13 @@ import android.util.Log
 import com.cipegas.administracion.domain.model.BankItem
 import com.cipegas.administracion.domain.model.BillItem
 import com.cipegas.administracion.domain.model.ChargeItem
-import com.cipegas.administracion.domain.model.ClientItem
 import com.cipegas.administracion.domain.model.FactsItem
 import com.cipegas.administracion.domain.model.LoanItem
 import com.cipegas.administracion.domain.model.OptionItem
 import com.cipegas.administracion.domain.model.ProviderItem
 import com.cipegas.administracion.domain.model.QuotaItem
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.Flow
@@ -29,11 +29,29 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         const val BILLS_COLLECTION = "facturas"
     }
 
-    fun getCharge() : Flow<List<ChargeItem>>{
-        return db.collection(CHARGE_COLLECTION)
-            .snapshots()
-            .map { qs -> qs.toObjects(ChargueResponse::class.java)
-                .mapNotNull { cr -> chargeToDomain(cr) }}
+    suspend fun getCharge() : List<ChargeItem>{
+//        return db.collection(BILLS_COLLECTION)
+//            .snapshots()
+//            .map { qs -> qs.toObjects(ChargueResponse::class.java)
+//                .mapNotNull { cr -> chargeToDomain(cr) }}
+
+
+        val chargesResponse : MutableList<ChargueResponse> = arrayListOf()
+
+        db.collection(BILLS_COLLECTION).orderBy("id",Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                for (document in snapshot){
+                    val chargueResponse = document.toObject<ChargueResponse>()
+                    chargesResponse.add(chargueResponse)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("CIPEGAS CARO", "get failed with", exception)
+            }
+            .await()
+
+        return chargeToDomain(chargesResponse)
     }
 
     fun getBills(idCLient : String) : Flow<List<FactsItem>>{
@@ -141,18 +159,17 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return providersDomain
     }
 
-    fun chargeToDomain(chargesResp : ChargueResponse) : ChargeItem {
+    fun chargeToDomain(chargesResp : List<ChargueResponse>) : List<ChargeItem> {
 
-        val clients : MutableList<ClientItem> = arrayListOf()
-        val ci :ChargeItem?
-
-        chargesResp.clients?.forEach { c ->
-            val cl = ClientItem(c.name,c.amount,c.id)
-            clients.add(cl)
+        val charguesDomain : MutableList<ChargeItem> = arrayListOf()
+        chargesResp.forEach { c ->
+            val amountTotal : Double = c.facts?.filter { it.state.contentEquals("PENDIENTE") }
+                ?.sumByDouble { it.amount } ?: 0.0
+            val cl = ChargeItem(date = "", name=c.name , amountTot = amountTotal,id = c.id)
+            charguesDomain.add(cl)
         }
 
-        ci = ChargeItem(clients,chargesResp.date.toString())
-        return ci
+        return charguesDomain
     }
 
     private fun oweToDomain(oweResp : OweResponse) : FactsItem {

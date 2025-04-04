@@ -33,7 +33,10 @@ fun NavManager(navigationController : NavHostController){
         composable(Routes.Chargue.route){
             CobranzasScreen(navigateToBills = {id ->
                 navigationController.navigate(Routes.Bills.createRoute(id))
-            })
+            },
+                navigateToBack = {
+                    navigationController.popBackStack()
+                })
         }
         composable(Routes.Providers.route){
             ProviderScreen()
@@ -44,7 +47,11 @@ fun NavManager(navigationController : NavHostController){
                 navArgument(name = "idClient"){ type = NavType.StringType}
             )
         ){
-            BillScreen(idClient = it.arguments?.getString("idClient").orEmpty())
+            BillScreen(
+                idClient = it.arguments?.getString("idClient").orEmpty(),
+                navigateToBack = {
+                    navigationController.popBackStack()
+                })
 
         }
     }

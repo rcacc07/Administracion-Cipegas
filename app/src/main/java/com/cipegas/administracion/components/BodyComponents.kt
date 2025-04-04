@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -50,18 +51,7 @@ fun MainTopBar(title: String, showBackButton: Boolean = false, onClickBackButton
             if (showBackButton) {
                 IconButton(onClick = { onClickBackButton() }) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "",
-                        tint = Color.White
-                    )
-                }
-            }
-        },
-        actions = {
-            if (!showBackButton) {
-                IconButton(onClick = { onClickAction() }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "",
                         tint = Color.White
                     )
