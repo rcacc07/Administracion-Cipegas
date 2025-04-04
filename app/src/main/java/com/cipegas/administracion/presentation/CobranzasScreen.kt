@@ -77,7 +77,7 @@ fun Cobranzas(client: List<ClientItem>, paddingValues: PaddingValues ,
 
             ){
                 Text(
-                    text = "TOTAL =",
+                    text = "TOTAL POR COBRAR =",
                     modifier = Modifier.weight(2f),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
@@ -119,7 +119,7 @@ fun CardCobranzasItem(client: ClientItem , onClick : () -> Unit) {
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(textAlign = TextAlign.Left),
-                fontSize = 12.sp)
+                fontSize = 14.sp)
 
             Text(
                 text = "S/.".plus(String.format("%-,20.2f", client.amount)).trim(),
@@ -128,7 +128,7 @@ fun CardCobranzasItem(client: ClientItem , onClick : () -> Unit) {
                 color = Color.Red,
                 style = TextStyle(textAlign = TextAlign.Left),
                 fontWeight = FontWeight.Bold,
-                fontSize = 12.sp)
+                fontSize = 14.sp)
 
         }
 

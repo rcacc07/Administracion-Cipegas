@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -78,33 +79,47 @@ fun Bills(bills : List<FactsItem> , paddingValues: PaddingValues){
             stickyHeader {
                 Row(
                     modifier = Modifier
-                        .height(60.dp)
-                        .fillMaxHeight()
-                        .fillMaxWidth()
                         .background(Color.LightGray)
-                        .padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(4.dp)
                 )
                 {
                     Text(
+                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
                         text = sectionedItem.name,
-                        fontSize = 14.sp,
-                        modifier = Modifier.weight(4f),
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Left
                     )
 
-                    val formatter = DecimalFormat("#,###,##0.00")
-                    val amountTotal = formatter.format(sectionedItem.amountTotal)
-
-
-                    Text(
-                        text = "S./".plus(amountTotal),
-                        fontSize = 14.sp,
-                        modifier = Modifier.weight(2f),
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+                    Column (
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
                     )
+                    {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Deuda Total",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+
+                        val formatter = DecimalFormat("#,###,##0.00")
+                        val amountTotal = formatter.format(sectionedItem.amountTotal)
+
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "S./".plus(amountTotal),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+
+                    }
+
+
                 }
             }
 
@@ -120,7 +135,7 @@ fun Bills(bills : List<FactsItem> , paddingValues: PaddingValues){
             }
 
             items(sectionedItem.fatcs){ it ->
-                Row {
+                Row (modifier = Modifier.padding(bottom = 2.dp , top = 2.dp)) {
                     Column (
                         modifier = Modifier
                             .weight(.2f)
@@ -128,15 +143,15 @@ fun Bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = it.numero.toString().trim(),
-                            fontSize = 14.sp,
+                            text = it.number.toString().trim(),
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.date.toString().trim(),
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
                         )
@@ -157,7 +172,7 @@ fun Bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.expirationDate.toString().trim(),
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
                         )
@@ -216,7 +231,7 @@ fun RowScope.TableCellBillProvider(
         Modifier
             .weight(weight)
             .padding(10.dp),
-        fontSize = 12.sp,
+        fontSize = 16.sp,
         fontWeight = if (title) FontWeight.Bold else FontWeight.Normal,
         textAlign = alignment,
     )

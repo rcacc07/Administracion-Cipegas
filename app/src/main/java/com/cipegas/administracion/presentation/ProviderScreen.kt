@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -70,35 +74,48 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
         providers.forEachIndexed{ index,sectionedItem ->
 
             stickyHeader {
-                Row(
+                Row (
                     modifier = Modifier
-                        .height(60.dp)
-                        .fillMaxHeight()
-                        .fillMaxWidth()
                         .background(Color.LightGray)
-                        .padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(4.dp)
                     )
                 {
                     Text(
+                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
                         text = (index+1).toString() +". "+sectionedItem.name,
                         fontSize = 16.sp,
-                        modifier = Modifier.weight(4f),
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Left
+                        maxLines = 1,
+                        textAlign = TextAlign.Left,
                     )
-
-                    val formatter = DecimalFormat("#,###,##0.00")
-                    val amountTotal = formatter.format(sectionedItem.amountTotal)
-
-                    Text(
-                        text = "S./".plus(amountTotal),
-                        fontSize = 16.sp,
-                        modifier = Modifier.weight(2f),
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+                    Column (
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
                         )
+                    {
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Deuda Total",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+
+                        val formatter = DecimalFormat("#,###,##0.00")
+                        val amountTotal = formatter.format(sectionedItem.amountTotal)
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "S./".plus(amountTotal),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+
                     }
+                }
             }
 
             item {
@@ -106,16 +123,35 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TableCellProvider(text = "NUM FACT", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCellProvider(text = "FECHA EMISION", weight = .2f, alignment = TextAlign.Center, title = true)
-                    TableCellProvider(text = "MONTO", weight = .2f, alignment = TextAlign.Center, title = true)
+                    TableCellProvider(text = "NUM FACT", weight = .2f, alignment = TextAlign.Center)
+                    TableCellProvider(text = "DESCRIPCION", weight = .2f, alignment = TextAlign.Center)
+                    TableCellProvider(text = "MONTO", weight = .2f, alignment = TextAlign.Center)
                 }
             }
 
             items(sectionedItem.fatcs){ it ->
 
-                Row {
-                    TableCellProvider(text = it.numero.toString(), weight = .2f,alignment = TextAlign.Center)
+                Row (modifier = Modifier.padding(bottom = 2.dp , top = 2.dp)) {
+                    Column (
+                        modifier = Modifier
+                            .weight(.2f)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = it.number.toString().trim(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = it.date.toString().trim(),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                     Column (
                         modifier = Modifier
                             .weight(.2f)
@@ -124,14 +160,14 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = it.client.toString().trim(),
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = it.date.toString().trim(),
-                            fontSize = 12.sp,
+                            text = it.expirationDate.toString().trim(),
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
                             textAlign = TextAlign.Center
                         )
@@ -155,7 +191,7 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                             modifier = Modifier.fillMaxWidth(),
                             text = it.state.toString().trim(),
                             color = textColor,
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
@@ -179,55 +215,23 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
 }
 
 @Composable
+private fun CustomHeader(){
+
+}
+
+@Composable
 fun RowScope.TableCellProvider(
     text:String,
     weight : Float,
-    alignment: TextAlign = TextAlign.Center,
-    title: Boolean = false){
+    alignment: TextAlign = TextAlign.Center){
 
     Text(
         text = text,
         Modifier
             .weight(weight)
             .padding(10.dp),
-        fontSize = 12.sp,
-        fontWeight = if (title) FontWeight.Bold else FontWeight.Normal,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
         textAlign = alignment,
     )
-}
-
-@Composable
-fun RowScope.TableCellProviderItem(
-    textAmount:String,
-    textState:String,
-    weight : Float,
-    alignment: TextAlign = TextAlign.Center,
-    ){
-
-    val color = if (textState.equals("Pagado",true)) Color.Red else Color.Black
-
-        Text(
-            text = textAmount ,
-            Modifier
-                .weight(weight)
-                .padding(10.dp),
-            color = color,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = alignment,
-        )
-        Text(
-            text = textState,
-            Modifier
-                .weight(weight)
-                .padding(10.dp),
-            color = color,
-            fontSize = 8.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = alignment,
-        )
-
-
-
-
 }

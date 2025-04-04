@@ -129,7 +129,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             val facts : MutableList<BillItem> = arrayListOf()
 
             l.facts?.forEach { q ->
-                val qi = BillItem(q.amount,q.date,q.expirationDate,q.numero,q.product,q.state,q.client)
+                val qi = BillItem(q.amount,q.date,q.expirationDate,q.number,q.product,q.state,q.client)
                 facts.add(qi)
             }
 
@@ -161,7 +161,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         val ci :FactsItem?
 
         oweResp.facts?.forEach { c ->
-            val cl = BillItem(c.amount,c.date,c.expirationDate,c.numero,c.product,c.state,c.client)
+            val cl = BillItem(c.amount,c.date,c.expirationDate,c.number,c.product,c.state,c.client)
             facts.add(cl)
         }
 

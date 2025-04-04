@@ -65,38 +65,36 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
             stickyHeader {
                 Row(
                     modifier = Modifier
-                        .height(60.dp)
-                        .fillMaxHeight()
-                        .fillMaxWidth()
                         .background(Color.LightGray)
                         .padding(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
                         text = (index+1).toString() +". "+sectionedItem.title,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        textAlign = TextAlign.Left
                         )
                     Column (
                         modifier = Modifier
+                            .fillMaxSize()
                             .weight(1f)
-                        .fillMaxHeight()
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
                        )
                     {
                         Text(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.fillMaxWidth(),
                             text = "S/.".plus(String.format("%-,20.2f", sectionedItem.amount)).trim(),
-                            fontSize = 12.sp ,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 16.sp ,
+                            fontWeight = FontWeight.Bold ,
+                            textAlign = TextAlign.Center
                         )
                         Text(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.fillMaxWidth(),
                             text = sectionedItem.fecDesem,
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
                         )
 
                     }
@@ -119,7 +117,7 @@ fun Loans(loans : List<LoanItem>, paddingValues: PaddingValues) {
                 val dec = DecimalFormat("#,###.00")
 
 
-                Row {
+                Row (modifier = Modifier.padding(bottom = 2.dp , top = 2.dp)) {
                     TableCell(text = it.fecVen.toString(), weight = .2f,alignment = TextAlign.Center)
                     TableCell(text = "S/. " + dec.format(amount), weight = .2f,alignment = TextAlign.Center)
                     TableCellItem(text = it.estado.toString() , weight = .2f,alignment = TextAlign.Center , state = true)
@@ -151,7 +149,7 @@ fun RowScope.TableCell(
         Modifier
             .weight(weight)
             .padding(10.dp),
-        fontSize = 12.sp,
+        fontSize = 16.sp,
         fontWeight = if (title) FontWeight.Bold else FontWeight.Normal,
         textAlign = alignment,
     )
@@ -172,7 +170,7 @@ fun RowScope.TableCellItem(
             .weight(weight)
             .padding(10.dp),
         color = color,
-        fontSize = 12.sp,
+        fontSize = 14.sp,
         fontWeight = if (state) FontWeight.Bold else FontWeight.Normal,
         textAlign = alignment,
     )
