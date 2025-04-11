@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class BillViewModel @Inject constructor(val db : DatabaseRepository): ViewModel() {
+class BillViewModel @Inject constructor(val db: DatabaseRepository) : ViewModel() {
 
-    var _uiState : MutableStateFlow<BillState> = MutableStateFlow(BillState())
-    val uiState : StateFlow<BillState> = _uiState
+    var _uiState: MutableStateFlow<BillState> = MutableStateFlow(BillState())
+    val uiState: StateFlow<BillState> = _uiState
 
-    suspend fun loadBillsCLient(idClient : String){
+    suspend fun loadBillsCLient(idClient: Int) {
 
         db.getBills(idClient).collect { cg ->
             _uiState.update {
@@ -28,13 +28,13 @@ class BillViewModel @Inject constructor(val db : DatabaseRepository): ViewModel(
 
     }
 
-    fun backView(){
+    fun backView() {
 
     }
 
 }
 
 data class BillState(
-    val isLoading : Boolean = false,
-    val bills : List<FactsItem> = emptyList(),
+    val isLoading: Boolean = false,
+    val bills: List<FactsItem> = emptyList(),
 )

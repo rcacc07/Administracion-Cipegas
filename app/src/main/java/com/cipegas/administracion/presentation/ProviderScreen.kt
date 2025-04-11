@@ -77,16 +77,18 @@ fun Providers(providers : List<ProviderItem>, paddingValues: PaddingValues) {
                 Row (
                     modifier = Modifier
                         .background(Color.LightGray)
-                        .padding(4.dp)
+                        .padding(4.dp),
+
+                    verticalAlignment = Alignment.CenterVertically
                     )
                 {
                     Text(
-                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
-                        text = (index+1).toString() +". "+sectionedItem.name,
+                        modifier = Modifier.weight(1f),
+                        text = sectionedItem.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
-                        textAlign = TextAlign.Left,
+                        textAlign = TextAlign.Center,
                     )
                     Column (
                         modifier = Modifier

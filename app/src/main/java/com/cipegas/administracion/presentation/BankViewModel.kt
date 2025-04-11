@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(val db : DatabaseRepository) : ViewModel() {
 
-    var _uiState : MutableStateFlow<HomeUiState> = MutableStateFlow<HomeUiState>(HomeUiState())
+    var _uiState : MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val uiState : StateFlow<HomeUiState> = _uiState
 
     init {

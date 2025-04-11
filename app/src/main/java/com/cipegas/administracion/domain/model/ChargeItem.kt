@@ -5,6 +5,6 @@ data class ChargeItem(
     val date : String ?= null,
     val name : String ?=null,
     val amountTot : Double = 0.0,
-    val id : String?= null
+    val id : Int =  0
 
 )

@@ -25,30 +25,31 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cipegas.administracion.components.MainTopBar
 import com.cipegas.administracion.domain.model.ChargeItem
-import com.cipegas.administracion.domain.model.ClientItem
 import java.text.DecimalFormat
 
 
 @Composable
 fun CobranzasScreen(
     cobranzasVM: CobranzaViewModel = hiltViewModel(),
-    navigateToBills : (String) -> Unit,
-    navigateToBack : () -> Unit ) {
+    navigateToBills: (Int) -> Unit,
+    navigateToBack: () -> Unit
+) {
 
-    val uiState : CobranzasUiState by cobranzasVM.uiState.collectAsState()
-    Scaffold (
+    val uiState: CobranzasUiState by cobranzasVM.uiState.collectAsState()
+    Scaffold(
         topBar = {
             MainTopBar(
-                title = "COBRANZAS" ,
-                showBackButton = true ,
-                onClickBackButton = { navigateToBack()}
+                title = "COBRANZAS",
+                showBackButton = true,
+                onClickBackButton = { navigateToBack() }
             ) {
                 //
             }
         }
-    ){
-        if(uiState.charges.isNotEmpty()){
-            Cobranzas(uiState.charges,it,
+    ) {
+        if (uiState.charges.isNotEmpty()) {
+            Cobranzas(
+                uiState.charges, it,
                 onSelectedOption = { id ->
                     navigateToBills(id)
                 })
@@ -57,38 +58,41 @@ fun CobranzasScreen(
 }
 
 @Composable
-fun Cobranzas(chargues: List<ChargeItem>, paddingValues: PaddingValues,
-              onSelectedOption: (String) -> Unit) {
+fun Cobranzas(
+    chargues: List<ChargeItem>, paddingValues: PaddingValues,
+    onSelectedOption: (Int) -> Unit
+) {
 
     var suma = 0.0
 
-    LazyColumn (
+    LazyColumn(
         modifier = Modifier
             .padding(paddingValues)
     ) {
-        items(chargues){ client ->
+        items(chargues) { client ->
             suma += client.amountTot
-            CardCobranzasItem(client , onClick = {
-                onSelectedOption(client.id.toString())
+            CardCobranzasItem(client, onClick = {
+                onSelectedOption(client.id)
             })
         }
 
         item {
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
                     .wrapContentHeight(),
                 horizontalArrangement = Arrangement.SpaceBetween,
 
-            ){
+                ) {
                 Text(
                     text = "TOTAL POR COBRAR =",
                     modifier = Modifier.weight(2f),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     style = TextStyle(textAlign = TextAlign.Center),
-                    fontSize = 16.sp)
+                    fontSize = 16.sp
+                )
 
                 val formatter = DecimalFormat("#,###,##0.00")
                 val amountTotal = formatter.format(suma)
@@ -98,7 +102,8 @@ fun Cobranzas(chargues: List<ChargeItem>, paddingValues: PaddingValues,
                     color = Color.Black,
                     style = TextStyle(textAlign = TextAlign.Left),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp)
+                    fontSize = 14.sp
+                )
 
 
             }
@@ -109,34 +114,38 @@ fun Cobranzas(chargues: List<ChargeItem>, paddingValues: PaddingValues,
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardCobranzasItem(chargue: ChargeItem , onClick : () -> Unit) {
+fun CardCobranzasItem(chargue: ChargeItem, onClick: () -> Unit) {
 
 
-        Row (modifier = Modifier
+    Row(
+        modifier = Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
             .padding(8.dp)
             .wrapContentHeight()
-        ){
+    ) {
 
-            Text(
-                text = chargue.name.toString(),
-                modifier = Modifier.weight(2f),
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                style = TextStyle(textAlign = TextAlign.Left),
-                fontSize = 14.sp)
+        Text(
+            text = chargue.name.toString(),
+            modifier = Modifier.weight(2f),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            style = TextStyle(textAlign = TextAlign.Left),
+            fontSize = 14.sp
+        )
 
-            Text(
-                text = "S/.".plus(String.format("%-,20.2f", chargue.amountTot)).trim(),
-                modifier = Modifier.weight(1f)
-                    .fillMaxWidth(),
-                color = Color.Red,
-                style = TextStyle(textAlign = TextAlign.Left),
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp)
+        Text(
+            text = "S/.".plus(String.format("%-,20.2f", chargue.amountTot)).trim(),
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            color = Color.Red,
+            style = TextStyle(textAlign = TextAlign.Left),
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp
+        )
 
-        }
+    }
 
 
 }

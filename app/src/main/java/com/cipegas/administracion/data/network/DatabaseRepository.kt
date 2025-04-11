@@ -54,7 +54,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
         return chargeToDomain(chargesResponse)
     }
 
-    fun getBills(idCLient : String) : Flow<List<FactsItem>>{
+    fun getBills(idCLient : Int) : Flow<List<FactsItem>>{
         return db.collection(BILLS_COLLECTION).whereEqualTo("id",idCLient)
             .snapshots()
             .map { qs -> qs.toObjects(OweResponse::class.java)
@@ -182,7 +182,7 @@ class DatabaseRepository @Inject constructor(val db : FirebaseFirestore) {
             facts.add(cl)
         }
 
-        ci = FactsItem(facts,oweResp.id.toString(),oweResp.name.toString(),0.0)
+        ci = FactsItem(facts,oweResp.id,oweResp.name.toString(),0.0)
         return ci
     }
 

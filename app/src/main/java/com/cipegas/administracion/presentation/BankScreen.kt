@@ -30,13 +30,16 @@ import com.cipegas.administracion.domain.model.BankItem
 
 
 @Composable
-fun BankScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun BankScreen(homeViewModel: HomeViewModel = hiltViewModel(),
+               navigateToBack : () -> Unit ) {
 
     val uiState : HomeUiState by homeViewModel.uiState.collectAsState()
     Scaffold (
         topBar = {
-            MainTopBar(title = "BANCOS" , onClickBackButton = {}) {
-                //
+            MainTopBar(title = "BANCOS" ,
+                showBackButton = true,
+                onClickBackButton = {navigateToBack()}) {
+
             }
         }
     ){

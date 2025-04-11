@@ -35,9 +35,10 @@ import com.cipegas.administracion.domain.model.FactsItem
 import java.text.DecimalFormat
 
 @Composable
-fun BillScreen(billViewModel : BillViewModel = hiltViewModel(),
-               idClient:String,
-               navigateToBack : () -> Unit ){
+fun BillScreen(
+    billViewModel: BillViewModel = hiltViewModel(),
+    idClient: Int,
+    navigateToBack: () -> Unit ){
 
     val uiState : BillState by billViewModel.uiState.collectAsState()
 
@@ -83,15 +84,16 @@ fun Bills(bills : List<FactsItem> , paddingValues: PaddingValues){
                 Row(
                     modifier = Modifier
                         .background(Color.LightGray)
-                        .padding(4.dp)
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 )
                 {
                     Text(
-                        modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
+                        modifier = Modifier.weight(1f),
                         text = sectionedItem.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Left
+                        textAlign = TextAlign.Center
                     )
 
                     Column (
